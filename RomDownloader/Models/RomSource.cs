@@ -11,6 +11,12 @@ namespace RomDownloader.Models
         internal readonly string Name;
         internal readonly string URL;
 
-        
+        internal RomSource(string name, string url)
+        {
+            Name = name;
+            URL = url;
+        }
+
+        abstract internal List<GameConsole> GetSystems();
     }
 }

@@ -9,5 +9,14 @@ namespace RomDownloader.RomSources
 {
     class DopeRoms : RomSource
     {
+        internal DopeRoms(): base("DopeRoms", "http://doperoms.com/")
+        {
+            
+        }
+
+        internal override List<GameConsole> GetSystems()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
