@@ -11,34 +11,28 @@ namespace RomDownloader.RomSources
 {
     class DopeRoms : RomSource
     {
-        internal DopeRoms(): base("DopeRoms", "http://doperoms.com/")
+
+        internal DopeRoms(): base("DopeRoms", "http://doperoms.com/roms")
         {
             
         }
-
+        
         internal override List<GameConsole> GetSystems()
         {
+            //use the webclient to grab the source code of the page
             WebClient webClient = new WebClient();
-            string page = webClient.DownloadString($"{URL}/roms");
+            string page = webClient.DownloadString(URL);
 
+            // pass the source code intothe html document
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(page);
 
-            var testing = doc.DocumentNode.SelectNodes("//html[1]/body[1]/div[2]/div[1]/div[10]/table[2]/tr[2]/td[1]/font[1]/table[1]/tr[1]/td[1]/table[1]/");
-                //.Descendants()
-                //.Where(n => n.Id == "listitem");
-            //var testing = doc.GetElementbyId("listitem");
-            //var testing = doc.DocumentNode.SelectNodes("//div");
-            //.Where(c => c.Attributes["id"].Value == "listitem")
-            //.ToList();
-
-            //foreach(var c in testing)
-            //{
-            //    var x = c;
-            //}
-
-            return null;
-                
+            // navigate the nodes to find the game console listings
+            SystemList = doc.DocumentNode.SelectNodes("//html/body/div/div/div/table[2]/tr/td[1]/font[1]/table/tr/td/table/tr/td/a")
+                // select the name and the provided url from the node
+               .Select(n => new GameConsole(n.InnerText, n.Attributes["href"].Value)).ToList();
+            
+            return SystemList; 
         }
     }
 }

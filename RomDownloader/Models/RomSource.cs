@@ -10,12 +10,29 @@ namespace RomDownloader.Models
     {
         internal readonly string Name;
         internal readonly string URL;
+        protected List<GameConsole> systemList;
+
+        internal List<GameConsole> SystemList
+        {
+            get
+            {
+                if (systemList == null)
+                    systemList = GetSystems();
+
+                return systemList;
+            }
+            set
+            {
+                systemList = value;
+            }
+        }
 
         internal RomSource(string name, string url)
         {
             Name = name;
             URL = url;
         }
+
 
         abstract internal List<GameConsole> GetSystems();
     }

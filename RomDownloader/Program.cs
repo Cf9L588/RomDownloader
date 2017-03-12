@@ -15,12 +15,9 @@ namespace RomDownloader
         [STAThread]
         static void Main()
         {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
-
-            DopeRoms r = new DopeRoms();
-            r.GetSystems();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Forms.MainForm());
         }
     }
 }
