@@ -18,6 +18,7 @@ namespace RomDownloader
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Forms.MainForm());
+            // THis is manfred 
         }
     }
 }
