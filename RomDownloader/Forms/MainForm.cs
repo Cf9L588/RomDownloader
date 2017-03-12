@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MetroFramework.Forms;
 
 namespace RomDownloader.Forms
 {
-    public partial class MainForm : Form
+    public partial class MainForm : MetroForm
     {
         public MainForm()
         {

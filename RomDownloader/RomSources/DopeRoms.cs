@@ -11,7 +11,6 @@ namespace RomDownloader.RomSources
 {
     class DopeRoms : RomSource
     {
-        public int hello;
         internal DopeRoms(): base("DopeRoms", "http://doperoms.com")
         {
             
@@ -19,7 +18,6 @@ namespace RomDownloader.RomSources
         
         internal override List<GameConsole> GetSystems()
         {
-            //blablabla manfred
             //use the webclient to grab the source code of the page
             WebClient webClient = new WebClient();
             string page = webClient.DownloadString(new Uri(URL, "roms"));
