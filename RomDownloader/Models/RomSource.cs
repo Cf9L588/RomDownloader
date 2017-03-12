@@ -9,7 +9,7 @@ namespace RomDownloader.Models
     internal abstract class RomSource
     {
         internal readonly string Name;
-        internal readonly string URL;
+        internal readonly Uri URL;
         protected List<GameConsole> systemList;
 
         internal List<GameConsole> SystemList
@@ -30,7 +30,7 @@ namespace RomDownloader.Models
         internal RomSource(string name, string url)
         {
             Name = name;
-            URL = url;
+            URL = new Uri(url);
         }
 
 

@@ -12,7 +12,7 @@ namespace RomDownloader.RomSources
     class DopeRoms : RomSource
     {
 
-        internal DopeRoms(): base("DopeRoms", "http://doperoms.com/roms")
+        internal DopeRoms(): base("DopeRoms", "http://doperoms.com")
         {
             
         }
@@ -21,7 +21,7 @@ namespace RomDownloader.RomSources
         {
             //use the webclient to grab the source code of the page
             WebClient webClient = new WebClient();
-            string page = webClient.DownloadString(URL);
+            string page = webClient.DownloadString(new Uri(URL, "roms"));
 
             // pass the source code into the html document
             HtmlDocument doc = new HtmlDocument();

@@ -9,12 +9,12 @@ namespace RomDownloader.Models
     public class GameConsole
     {
         internal readonly string Name;
-        internal readonly string RomListUrl;
+        internal readonly Uri RomListUrl;
 
         public GameConsole(string name, string url)
         {
             Name = name;
-            RomListUrl = url;
+            RomListUrl = new Uri(url);
         }
     }
 }
