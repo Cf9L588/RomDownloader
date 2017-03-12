@@ -23,7 +23,7 @@ namespace RomDownloader.RomSources
             WebClient webClient = new WebClient();
             string page = webClient.DownloadString(URL);
 
-            // pass the source code intothe html document
+            // pass the source code into the html document
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(page);
 
