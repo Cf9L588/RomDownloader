@@ -6,15 +6,39 @@ using System.Threading.Tasks;
 
 namespace RomDownloader.Models
 {
-    public class GameConsole
+    internal class GameConsole
     {
+        internal readonly RomSource Source;
         internal readonly string Name;
         internal readonly Uri RomListUrl;
+        private List<Rom> roms;
 
-        public GameConsole(string name, string url)
+        internal List<Rom> Roms
+        {
+            get
+            {
+                if(roms == null)
+                {
+                    roms = Source.GetSystemRoms(this);
+                }
+                return roms;
+            }
+
+            set
+            {
+                roms = value;
+            }
+        }
+
+        internal GameConsole(string name, string url, RomSource source)
+            : this(name, new Uri(url), source) { }
+
+        internal GameConsole(string name, Uri url, RomSource source)
         {
             Name = name;
-            RomListUrl = new Uri(url);
+            RomListUrl = url;
+            Source = source;
         }
+
     }
 }

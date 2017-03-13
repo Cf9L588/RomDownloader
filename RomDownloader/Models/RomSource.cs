@@ -8,8 +8,8 @@ namespace RomDownloader.Models
 {
     internal abstract class RomSource
     {
-        internal readonly string Name;
-        internal readonly Uri URL;
+        internal string Name { get;  set; }
+        internal Uri URL { get;  set; }
         protected List<GameConsole> systemList;
 
         internal List<GameConsole> SystemList
@@ -33,7 +33,14 @@ namespace RomDownloader.Models
             URL = new Uri(url);
         }
 
+        internal RomSource()
+        {
+
+        }
+
 
         abstract internal List<GameConsole> GetSystems();
+
+        abstract internal List<Rom> GetSystemRoms(GameConsole system);
     }
 }
