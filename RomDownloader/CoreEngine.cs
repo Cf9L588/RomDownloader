@@ -42,9 +42,12 @@ namespace RomDownloader
 
         public CoreEngine()
         {
+            // Instantiate to List Objects
             Sources = new List<RomSource>();
             SystemList = new List<GameConsole>();
+            // Gather all RomSources in the Assembly
             GetRomSourcesList();
+            // get a List of Systems available
             GetSystemsList();
         }
 
@@ -72,21 +75,36 @@ namespace RomDownloader
         /// </summary>
         private void GetSystemsList()
         {
+            // foreach RomSource in our program
             foreach(var source in Sources)
             {
+                // populate system list from this source if it is null
+                if (source.SystemList == null)
+                    source.GetSystems();
+
+                // Foreach system for the current source
                 foreach(var system in source.SystemList)
                 {
+                    // Add it to the core list of systems
                     SystemList.Add(system);
                 }
             }
-            //Sources.ForEach(s => s.SystemList.ForEach(l => SystemList.Add(l)));
         }
         
         internal List<string> GetSystemNames()
         {
+            // Create a hashset so we can add things to it without worrying about duplicates
             HashSet<string> names = new HashSet<string>();
+            //  add all systems names since we cannot have dups
             SystemList.ForEach(s => names.Add(s.Name));
-            return names.ToList();
+
+            // Return it as a sorted list, because it's easier to work with
+            // Convert HashSet to List
+            var output = names.ToList();
+            // Order the list
+            output.Sort();
+            //return the list
+            return output;
         }
 
         internal List<string> GetRomsListForSystem(string systemName)

@@ -9,8 +9,9 @@ namespace RomDownloader.Models
     internal class GameConsole
     {
         internal readonly RomSource Source;
-        internal readonly string Name;
+        internal string Name;
         internal readonly Uri RomListUrl;
+        internal string Id { get; set; }
         private List<Rom> roms;
 
         internal List<Rom> Roms
@@ -38,6 +39,7 @@ namespace RomDownloader.Models
             Name = name;
             RomListUrl = url;
             Source = source;
+            Id = Name;
         }
 
     }

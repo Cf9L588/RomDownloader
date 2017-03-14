@@ -17,15 +17,12 @@ namespace RomDownloader
         [STAThread]
         static void Main()
         {
-            InitializeCore();
+            // Instantiate Core and launch main UI
+            Globals.Core = new CoreEngine();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Forms.MainForm());
         }
-
-        private static void InitializeCore()
-        {
-            Globals.Core = new CoreEngine();
-        }
+        
     }
 }

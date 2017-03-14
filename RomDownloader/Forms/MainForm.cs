@@ -17,9 +17,15 @@ namespace RomDownloader.Forms
         public MainForm()
         {
             InitializeComponent();
+            // Bind the list of all systems to the dropdown box
             cboSystems.DataSource = Globals.Core.GetSystemNames();
         }
 
+        /// <summary>
+        /// Handles what happens when a new dropdown selection is made
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cboSystems_SelectedIndexChanged(object sender, EventArgs e)
         {
             lstRoms.Items.Clear();

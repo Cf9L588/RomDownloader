@@ -16,9 +16,6 @@ namespace RomDownloader.Models
         {
             get
             {
-                if (systemList == null)
-                    systemList = GetSystems();
-
                 return systemList;
             }
             set
