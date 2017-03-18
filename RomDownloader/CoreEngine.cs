@@ -105,13 +105,15 @@ namespace RomDownloader
             return output;
         }
 
-        internal async Task<List<string>> GetRomsListForSystem(string systemName)
+        internal List<string> GetRomsListForSystem(string systemName)
         {
             HashSet<string> romNames = new HashSet<string>();
+
             foreach( var system in SystemList.Where(s => s.Name == systemName))
             {
                 system.Roms?.ForEach(rom => romNames.Add(rom.Name));
             }
+
             var output = romNames.ToList();
             output.Sort();
             return output;

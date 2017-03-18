@@ -32,7 +32,7 @@ namespace RomDownloader.Forms
             lblLoadingRoms.Visible = true;
             prgLoadingRoms.Visible = true;
             this.Refresh();
-            Globals.Core.GetRomsListForSystem((string)cboSystems.SelectedItem).ForEach(rom => lstRoms.Items.Add(rom));
+            Globals.Core.GetRomsListForSystem(cboSystems.SelectedItem as string).ForEach(rom => lstRoms.Items.Add(rom));
             lblLoadingRoms.Visible = false;
             prgLoadingRoms.Visible = false;
         }
