@@ -35,7 +35,6 @@ namespace RomDownloader.Models
 
         }
 
-
         abstract internal List<GameConsole> GetSystems();
 
         abstract internal List<Rom> GetSystemRoms(GameConsole system);

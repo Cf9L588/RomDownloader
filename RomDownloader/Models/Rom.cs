@@ -28,7 +28,8 @@ namespace RomDownloader.Models
 
             set
             {
-                _name = value;
+                if(!string.IsNullOrEmpty(value))
+                    _name = value;
             }
         }
 

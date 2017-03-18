@@ -231,6 +231,7 @@ namespace RomDownloader.RomSources
                             rom.Name = rom.Name.Replace(info, "").Trim();
                             break;
                         }
+
                     }
                 }
                 //if lastIndex is before the end of the string we find the index of the next "("
