@@ -12,8 +12,7 @@ namespace RomDownloader
     {
         private List<RomSource> _sources;
         private List<GameConsole> _systemList;
-
-        public List<GameConsole> SystemList
+        internal List<GameConsole> SystemList
         {
             get
             {
@@ -38,9 +37,8 @@ namespace RomDownloader
                 _sources = value;
             }
         }
-        
 
-        public CoreEngine()
+        internal CoreEngine()
         {
             // Instantiate to List Objects
             Sources = new List<RomSource>();
@@ -107,7 +105,7 @@ namespace RomDownloader
             return output;
         }
 
-        internal List<string> GetRomsListForSystem(string systemName)
+        internal async Task<List<string>> GetRomsListForSystem(string systemName)
         {
             HashSet<string> romNames = new HashSet<string>();
             foreach( var system in SystemList.Where(s => s.Name == systemName))

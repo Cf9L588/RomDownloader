@@ -13,7 +13,9 @@ namespace RomDownloader.Models
         private string _downloadUrl;
         private StatusType _status;
         private LanguageType _language;
+        private CheckSumType _checksum;
         private bool _isPublicDomain;
+        private GameConsole _system;
         #endregion
 
         #region Properties
@@ -81,15 +83,47 @@ namespace RomDownloader.Models
                 _isPublicDomain = value;
             }
         }
+
+        internal GameConsole System
+        {
+            get
+            {
+                return _system;
+            }
+
+            set
+            {
+                _system = value;
+            }
+        }
+
+        internal RomSource Source
+        {
+            get { return System.Source; }
+        }
+
+        internal CheckSumType Checksum
+        {
+            get
+            {
+                return _checksum;
+            }
+
+            set
+            {
+                _checksum = value;
+            }
+        }
         #endregion
 
-        public Rom(string name, string url)
+        public Rom(string name, string url, GameConsole system)
         {
             Name = name;
             DownloadUrl = url;
+            System = system;
         }
 
-        public Rom(string name, Uri url): this(name, url.ToString()){ }
+        public Rom(string name, Uri url, GameConsole system): this(name, url.ToString(), system){ }
 
         internal enum StatusType
         {
@@ -103,6 +137,13 @@ namespace RomDownloader.Models
             Unknown,
             English,
             Japanese
+        }
+
+        internal enum CheckSumType
+        {
+            Unknown,
+            Good, 
+            Bad
         }
     }
 }

@@ -79,7 +79,7 @@ namespace RomDownloader.RomSources
                         // There is also a status
                         var statusNodes = node.SelectNodes(".//td/font/img");
                         // instantiate the rom based on the main and status nodes
-                        Rom newRom = CreateRomsFromNodes(mainNode, statusNodes);
+                        Rom newRom = CreateRomsFromNodes(mainNode, statusNodes, system);
                         // if this is a legit rom
                         if (newRom != null && newRom.Name != "No Roms")
                         {
@@ -119,7 +119,7 @@ namespace RomDownloader.RomSources
                 system.Name = ConsoleNames[system.Id];
         }
         
-        private Rom CreateRomsFromNodes(HtmlNode mainNode, HtmlNodeCollection StatusNodes)
+        private Rom CreateRomsFromNodes(HtmlNode mainNode, HtmlNodeCollection StatusNodes, GameConsole system)
         {
             // Create a blank variable to start with
             // this is for the case that the nodes can't create a legit rom and we can return a null value
@@ -130,9 +130,8 @@ namespace RomDownloader.RomSources
                 // Extract the rom name from the mainNode
                 string romName = mainNode.Attributes["name"].Value;
                 // Create a rom with the name and the href
-                output = new Rom(romName, new Uri(this.URL, mainNode.Attributes["href"].Value));
-                // Pass the rom to this function to remove some unneeded  parts from the name and to get value from them
-                GetRomInfoFromName(output);
+                output = new Rom(romName, new Uri(this.URL, mainNode.Attributes["href"].Value), system);
+
                 // If the status node is not null, try to get the status
                 if(StatusNodes != null)
                 {
@@ -140,6 +139,7 @@ namespace RomDownloader.RomSources
                     foreach (var statusNode in StatusNodes)
                     {
                         // The alt text contains the key to the status legend
+                        // This is only specific to this RomSource
                         switch (statusNode.Attributes["alt"].Value.ToUpper())
                         {
                             case "VERIFIED GOOD":
@@ -152,6 +152,9 @@ namespace RomDownloader.RomSources
                         }
                     }
                 }
+
+                // Pass the rom to this function to remove some unneeded  parts from the name and to get value from them
+                GetRomInfoFromName(output);
             }
             // Return the rom value (or null)
             return output;
@@ -161,6 +164,8 @@ namespace RomDownloader.RomSources
         {
             // remove the .zip extension
             rom.Name = rom.Name.Replace(".zip", "")
+                //Remove the .rar extension
+                .Replace(".rar", "")
                 // Remove the good dump marker
                 .Replace("[!]", "")
                 // Replace the checksum marker
