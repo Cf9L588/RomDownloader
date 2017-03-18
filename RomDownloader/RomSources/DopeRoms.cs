@@ -9,7 +9,7 @@ using System.Net;
 
 namespace RomDownloader.RomSources
 {
-    class DopeRoms : RomSource, IRomHandler
+    class DopeRoms : RomSource
     {
         public DopeRoms()
         {
@@ -29,12 +29,13 @@ namespace RomDownloader.RomSources
                 doc.LoadHtml(page);
 
                 // navigate the nodes to find the game console listings
-                SystemList = doc.DocumentNode.SelectNodes("//html/body/div/div/div/table[2]/tr/td[1]/font[1]/table/tr/td/table/tr/td/a")
+                var test = doc.DocumentNode.SelectNodes("//html/body/div/div/div/table[2]/tr/td[1]/font[1]/table/tr/td/table/tr/td");
+                if (test == null) { }
                    // select the name and the provided url from the node
-                   .Select(n => new GameConsole(n.InnerText, new Uri(URL, n.Attributes["href"].Value), this)).ToList();
+                   //.Select(n => new GameConsole(n.InnerText, new Uri(URL, n.Attributes["href"].Value), this)).ToList();
             }
             // This is an impromptu attempt to fix the system names
-            SystemList.ForEach(system => FixConsoleName(system));
+            //SystemList.ForEach(system => FixConsoleName(system));
             
             return SystemList; 
         }
