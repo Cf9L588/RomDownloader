@@ -9,7 +9,7 @@ using System.Net;
 
 namespace RomDownloader.RomSources
 {
-    class DopeRoms : RomSource
+    class DopeRoms : RomSource, IRomHandler
     {
         public DopeRoms()
         {
@@ -247,6 +247,11 @@ namespace RomDownloader.RomSources
                 // if another instance occurs in the string, add it's value to the current lastIndex
                 lastIndex = nextIndex != -1 ? lastIndex + nextIndex : -1; 
             }
+        }
+
+        public void DownloadRom(string url)
+        {
+            throw new NotImplementedException();
         }
 
         private static Dictionary<string, string> ConsoleNames = new Dictionary<string, string>()
