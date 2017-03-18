@@ -234,7 +234,15 @@ namespace RomDownloader.RomSources
                     }
                 }
                 //if lastIndex is before the end of the string we find the index of the next "("
-                int nextIndex = lastIndex < rom.Name.Length ? rom.Name.Substring(lastIndex).IndexOf("(") : -1;
+                int nextIndex; // = lastIndex < rom.Name.Length ? rom.Name.Substring(lastIndex).IndexOf("(") : -1;
+                if(lastIndex < rom.Name.Length)
+                {
+                    nextIndex = rom.Name.Substring(lastIndex).IndexOf("(");
+                }
+                else
+                {
+                    nextIndex = -1;
+                }
                 // if another instance occurs in the string, add it's value to the current lastIndex
                 lastIndex = nextIndex != -1 ? lastIndex + nextIndex : -1; 
             }
