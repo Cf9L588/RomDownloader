@@ -12,6 +12,8 @@ namespace RomDownloader.Models
         internal Uri URL { get;  set; }
         protected List<GameConsole> systemList;
 
+        internal delegate void SystemFoundHandler(GameConsole system);
+        internal event SystemFoundHandler SystemFound;
 
         internal List<GameConsole> SystemList
         {
@@ -29,6 +31,11 @@ namespace RomDownloader.Models
         {
             Name = name;
             URL = new Uri(url);
+        }
+
+        protected void TriggerSystemFound(GameConsole system)
+        {
+            SystemFound?.Invoke(system);
         }
 
         internal RomSource()

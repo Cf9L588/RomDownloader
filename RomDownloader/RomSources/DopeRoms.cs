@@ -11,10 +11,6 @@ namespace RomDownloader.RomSources
 {
     class DopeRoms : RomSource
     {
-
-        internal delegate void SystemFoundHandler(GameConsole system);
-        internal event SystemFoundHandler SystemFound;
-
         public DopeRoms()
         {
             Name = "DopeRoms";
@@ -41,7 +37,7 @@ namespace RomDownloader.RomSources
             foreach(var system in SystemList)
             {
                 FixConsoleName(system);
-                SystemFound?.Invoke(system);
+                TriggerSystemFound(system);
                 // This is the short hand version of this
                 //if (SystemFound != null)
                 //    SystemFound(system);
