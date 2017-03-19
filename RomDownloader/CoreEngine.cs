@@ -113,6 +113,13 @@ namespace RomDownloader
             foreach( var system in SystemList.Where(s => s.Name == systemName))
             {
                 system.Roms?.ForEach(rom => romNames.Add(rom.Name));
+                // Long hand
+                //if(system.Roms != null)
+                //{
+                //    foreach (var rom in system.Roms)
+                //        romNames.Add(rom.Name);
+                //}
+
             }
             // This is the long hand version of above
             //foreach (var system in SystemList)
