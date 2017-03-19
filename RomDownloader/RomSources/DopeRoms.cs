@@ -42,6 +42,9 @@ namespace RomDownloader.RomSources
             {
                 FixConsoleName(system);
                 SystemFound?.Invoke(system);
+                // This is the short hand version of this
+                //if (SystemFound != null)
+                //    SystemFound(system);
             }
             
             return SystemList; 
