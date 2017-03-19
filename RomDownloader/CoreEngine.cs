@@ -78,7 +78,10 @@ namespace RomDownloader
             {
                 // populate system list from this source if it is null
                 if (source.SystemList == null)
+                {
+                    source.SystemFound += (System) => SytemList.Add(System);
                     source.GetSystems();
+                }
 
                 // Foreach system for the current source
                 foreach(var system in source.SystemList)
