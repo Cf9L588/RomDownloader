@@ -79,7 +79,7 @@ namespace RomDownloader
                 // populate system list from this source if it is null
                 if (source.SystemList == null)
                 {
-                    source.SystemFound += (System) => SytemList.Add(System);
+                    source.SystemFound += OnSystemFound;
                     source.GetSystems();
                 }
 
@@ -90,6 +90,11 @@ namespace RomDownloader
                     SystemList.Add(system);
                 }
             }
+        }
+
+        private void OnSystemFound(GameConsole system)
+        {
+            SystemList.Add(system);
         }
         
         internal List<string> GetSystemNames()
