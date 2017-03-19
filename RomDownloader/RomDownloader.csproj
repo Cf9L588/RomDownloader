@@ -69,6 +69,7 @@
     <Compile Include="Globals.cs" />
     <Compile Include="CoreEngine.cs" />
     <Compile Include="Models\GameConsole.cs" />
+    <Compile Include="Models\IRomHandler.cs" />
     <Compile Include="Models\IRomParser.cs" />
     <Compile Include="Models\ISystemGetter.cs" />
     <Compile Include="Models\Rom.cs" />
