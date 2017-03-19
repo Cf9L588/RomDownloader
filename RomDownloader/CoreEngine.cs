@@ -114,6 +114,12 @@ namespace RomDownloader
             {
                 system.Roms?.ForEach(rom => romNames.Add(rom.Name));
             }
+            // This is the long hand version of above
+            //foreach (var system in SystemList)
+            //{
+            //    if(system.Name == systemName)
+            //        system.Roms?.ForEach(rom => romNames.Add(rom.Name));
+            //}
 
             var output = romNames.ToList();
             output.Sort();
