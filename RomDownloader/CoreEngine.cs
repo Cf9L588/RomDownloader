@@ -82,13 +82,6 @@ namespace RomDownloader
                     source.SystemFound += OnSystemFound;
                     source.GetSystems();
                 }
-
-                // Foreach system for the current source
-                foreach(var system in source.SystemList)
-                {
-                    // Add it to the core list of systems
-                    SystemList.Add(system);
-                }
             }
         }
 
@@ -113,7 +106,7 @@ namespace RomDownloader
             return output;
         }
 
-        internal List<string> GetRomsListForSystem(string systemName)
+        internal List<string> GetSystemRoms(string systemName)
         {
             HashSet<string> romNames = new HashSet<string>();
 
