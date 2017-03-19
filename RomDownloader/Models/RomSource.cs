@@ -12,6 +12,7 @@ namespace RomDownloader.Models
         internal Uri URL { get;  set; }
         protected List<GameConsole> systemList;
 
+
         internal List<GameConsole> SystemList
         {
             get
@@ -35,7 +36,7 @@ namespace RomDownloader.Models
 
         }
 
-        abstract internal List<GameConsole> GetSystems();
+        abstract internal Task<List<GameConsole>> GetSystems();
 
         abstract internal List<Rom> GetSystemRoms(GameConsole system);
     }

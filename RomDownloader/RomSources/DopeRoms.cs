@@ -11,13 +11,17 @@ namespace RomDownloader.RomSources
 {
     class DopeRoms : RomSource
     {
+
+        internal delegate void SystemFoundHandler(GameConsole system);
+        internal event SystemFoundHandler SystemFound;
+
         public DopeRoms()
         {
             Name = "DopeRoms";
             URL = new Uri("http://doperoms.com");
         }
 
-        internal override List<GameConsole> GetSystems()
+        internal override async Task<List<GameConsole>> GetSystems()
         {
             //use the webclient to grab the source code of the page
             using (WebClient webClient = new WebClient())
@@ -34,7 +38,11 @@ namespace RomDownloader.RomSources
                    .Select(n => new GameConsole(n.InnerText, new Uri(URL, n.Attributes["href"].Value), this)).ToList();
             }
             // This is an impromptu attempt to fix the system names
-            SystemList.ForEach(system => FixConsoleName(system));
+            foreach(var system in SystemList)
+            {
+                FixConsoleName(system);
+                SystemFound?.Invoke(system);
+            }
             
             return SystemList; 
         }

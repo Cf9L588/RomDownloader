@@ -70,6 +70,7 @@
     <Compile Include="CoreEngine.cs" />
     <Compile Include="Models\GameConsole.cs" />
     <Compile Include="Models\IRomParser.cs" />
+    <Compile Include="Models\ISystemGetter.cs" />
     <Compile Include="Models\Rom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
