@@ -18,7 +18,7 @@ namespace RomDownloader.Forms
         {
             InitializeComponent();
             // Bind the list of all systems to the dropdown box
-            cboSystems.DataSource = Globals.Core.GetSystemNames();
+            cboSystems.DataSource = Core.GetSystemNames();
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace RomDownloader.Forms
             prgLoadingRoms.Visible = true;
             this.Refresh();
 
-            Globals.Core.GetSystemRoms(cboSystems.SelectedItem as string)
+            Core.GetSystemRoms(cboSystems.SelectedItem as string)
                 .ForEach(rom => lstRoms.Items.Add(rom));
 
             lblLoadingRoms.Visible = false;

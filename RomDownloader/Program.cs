@@ -18,7 +18,7 @@ namespace RomDownloader
         static void Main()
         {
             // Instantiate Core and launch main UI
-            Globals.Core = new CoreEngine();
+            Core.Init();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Forms.MainForm());

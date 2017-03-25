@@ -67,11 +67,8 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Globals.cs" />
-    <Compile Include="CoreEngine.cs" />
+    <Compile Include="Core.cs" />
     <Compile Include="Models\GameConsole.cs" />
-    <Compile Include="Models\IRomHandler.cs" />
-    <Compile Include="Models\IRomParser.cs" />
-    <Compile Include="Models\ISystemGetter.cs" />
     <Compile Include="Models\Rom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

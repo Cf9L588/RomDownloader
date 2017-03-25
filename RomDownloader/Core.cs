@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace RomDownloader
 {
-    internal class CoreEngine
+    internal static class Core
     {
-        private List<RomSource> _sources;
-        private List<GameConsole> _systemList;
-        internal List<GameConsole> SystemList
+        private static List<RomSource> _sources;
+        private static List<GameConsole> _systemList;
+        internal static List<GameConsole> SystemList
         {
             get
             {
@@ -25,7 +25,7 @@ namespace RomDownloader
             }
         }
 
-        internal List<RomSource> Sources
+        internal static List<RomSource> Sources
         {
             get
             {
@@ -38,7 +38,7 @@ namespace RomDownloader
             }
         }
 
-        internal CoreEngine()
+        internal static void Init()
         {
             // Instantiate to List Objects
             Sources = new List<RomSource>();
@@ -52,7 +52,7 @@ namespace RomDownloader
         /// <summary>
         /// Get all class that inherit from RomSource from within the assembly.
         /// </summary>
-        private void GetRomSourcesList()
+        private static void GetRomSourcesList()
         {
             // initialize a new list to work with
             List<RomSource> sources = new List<RomSource>();
@@ -71,7 +71,7 @@ namespace RomDownloader
         /// <summary>
         /// Get all GameConsoles on each RomSource
         /// </summary>
-        private void GetSystemsList()
+        private static void  GetSystemsList()
         {
             // foreach RomSource in our program
             foreach(var source in Sources)
@@ -85,12 +85,12 @@ namespace RomDownloader
             }
         }
 
-        private void OnSystemFound(GameConsole system)
+        private static void OnSystemFound(GameConsole system)
         {
             SystemList.Add(system);
         }
         
-        internal List<string> GetSystemNames()
+        internal static List<string> GetSystemNames()
         {
             // Create a hashset so we can add things to it without worrying about duplicates
             // Added the string comparer to avoid case sensitive mismatching - Chandler
@@ -107,27 +107,15 @@ namespace RomDownloader
             return output;
         }
 
-        internal List<string> GetSystemRoms(string systemName)
+        internal static List<string> GetSystemRoms(string systemName)
         {
             HashSet<string> romNames = new HashSet<string>();
 
             foreach( var system in SystemList.Where(s => s.Name == systemName))
             {
                 system.Roms?.ForEach(rom => romNames.Add(rom.Name));
-                // Long hand
-                //if(system.Roms != null)
-                //{
-                //    foreach (var rom in system.Roms)
-                //        romNames.Add(rom.Name);
-                //}
 
             }
-            // This is the long hand version of above
-            //foreach (var system in SystemList)
-            //{
-            //    if(system.Name == systemName)
-            //        system.Roms?.ForEach(rom => romNames.Add(rom.Name));
-            //}
 
             var output = romNames.ToList();
             output.Sort();
