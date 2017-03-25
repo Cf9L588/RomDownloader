@@ -31,12 +31,12 @@
             this.components = new System.ComponentModel.Container();
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
+            this.lstRoms = new System.Windows.Forms.ListBox();
+            this.prgLoadingRoms = new MetroFramework.Controls.MetroProgressSpinner();
+            this.lblLoadingRoms = new MetroFramework.Controls.MetroLabel();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.cboSystems = new MetroFramework.Controls.MetroComboBox();
             this.msmStyler = new MetroFramework.Components.MetroStyleManager(this.components);
-            this.lblLoadingRoms = new MetroFramework.Controls.MetroLabel();
-            this.prgLoadingRoms = new MetroFramework.Controls.MetroProgressSpinner();
-            this.lstRoms = new System.Windows.Forms.ListBox();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.msmStyler)).BeginInit();
@@ -74,6 +74,36 @@
             this.metroTabPage1.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabPage1.VerticalScrollbarSize = 10;
             // 
+            // lstRoms
+            // 
+            this.lstRoms.FormattingEnabled = true;
+            this.lstRoms.Location = new System.Drawing.Point(4, 79);
+            this.lstRoms.Name = "lstRoms";
+            this.lstRoms.Size = new System.Drawing.Size(380, 316);
+            this.lstRoms.TabIndex = 7;
+            // 
+            // prgLoadingRoms
+            // 
+            this.prgLoadingRoms.Location = new System.Drawing.Point(368, 45);
+            this.prgLoadingRoms.Maximum = 100;
+            this.prgLoadingRoms.Minimum = 1;
+            this.prgLoadingRoms.Name = "prgLoadingRoms";
+            this.prgLoadingRoms.Size = new System.Drawing.Size(16, 16);
+            this.prgLoadingRoms.TabIndex = 6;
+            this.prgLoadingRoms.UseSelectable = true;
+            this.prgLoadingRoms.Value = 30;
+            this.prgLoadingRoms.Visible = false;
+            // 
+            // lblLoadingRoms
+            // 
+            this.lblLoadingRoms.AutoSize = true;
+            this.lblLoadingRoms.Location = new System.Drawing.Point(269, 42);
+            this.lblLoadingRoms.Name = "lblLoadingRoms";
+            this.lblLoadingRoms.Size = new System.Drawing.Size(93, 19);
+            this.lblLoadingRoms.TabIndex = 5;
+            this.lblLoadingRoms.Text = "Loading Roms";
+            this.lblLoadingRoms.Visible = false;
+            // 
             // metroLabel1
             // 
             this.metroLabel1.AutoSize = true;
@@ -98,35 +128,6 @@
             // 
             this.msmStyler.Owner = this;
             // 
-            // lblLoadingRoms
-            // 
-            this.lblLoadingRoms.AutoSize = true;
-            this.lblLoadingRoms.Location = new System.Drawing.Point(269, 42);
-            this.lblLoadingRoms.Name = "lblLoadingRoms";
-            this.lblLoadingRoms.Size = new System.Drawing.Size(93, 19);
-            this.lblLoadingRoms.TabIndex = 5;
-            this.lblLoadingRoms.Text = "Loading Roms";
-            this.lblLoadingRoms.Visible = false;
-            // 
-            // prgLoadingRoms
-            // 
-            this.prgLoadingRoms.Location = new System.Drawing.Point(368, 45);
-            this.prgLoadingRoms.Maximum = 100;
-            this.prgLoadingRoms.Name = "prgLoadingRoms";
-            this.prgLoadingRoms.Size = new System.Drawing.Size(16, 16);
-            this.prgLoadingRoms.TabIndex = 6;
-            this.prgLoadingRoms.UseSelectable = true;
-            this.prgLoadingRoms.Value = 30;
-            this.prgLoadingRoms.Visible = false;
-            // 
-            // lstRoms
-            // 
-            this.lstRoms.FormattingEnabled = true;
-            this.lstRoms.Location = new System.Drawing.Point(4, 79);
-            this.lstRoms.Name = "lstRoms";
-            this.lstRoms.Size = new System.Drawing.Size(380, 316);
-            this.lstRoms.TabIndex = 7;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -135,6 +136,7 @@
             this.Controls.Add(this.metroTabControl1);
             this.Name = "MainForm";
             this.Text = "Rom Downloader";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.metroTabControl1.ResumeLayout(false);
             this.metroTabPage1.ResumeLayout(false);
             this.metroTabPage1.PerformLayout();

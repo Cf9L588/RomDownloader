@@ -14,14 +14,13 @@ namespace RomDownloader.Forms
 {
     public partial class MainForm : MetroForm
     {
+
         public MainForm()
         {
             InitializeComponent();
             this.StyleManager = msmStyler;
             msmStyler.Theme = MetroFramework.MetroThemeStyle.Dark;
             msmStyler.Style = MetroFramework.MetroColorStyle.Purple;
-            // Bind the list of all systems to the dropdown box
-            cboSystems.DataSource = Core.GetSystemNames();
         }
 
         /// <summary>
@@ -32,15 +31,25 @@ namespace RomDownloader.Forms
         private void cboSystems_SelectedIndexChanged(object sender, EventArgs e)
         {
             lstRoms.Items.Clear();
-            lblLoadingRoms.Visible = true;
-            prgLoadingRoms.Visible = true;
             this.Refresh();
 
-            Core.GetSystemRoms(cboSystems.SelectedItem as string)
-                .ForEach(rom => lstRoms.Items.Add(rom));
+            lblLoadingRoms.Visible = true;
+            prgLoadingRoms.Visible = true;
 
+            var list = Core.GetSystemRoms(cboSystems.SelectedItem as string);
+            foreach (var rom in list)
+            {
+                lstRoms.Items.Add(rom);
+            }
+            
             lblLoadingRoms.Visible = false;
             prgLoadingRoms.Visible = false;
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            // Bind the list of all systems to the dropdown box
+            cboSystems.DataSource = Core.GetSystemNames();
         }
     }
 }
