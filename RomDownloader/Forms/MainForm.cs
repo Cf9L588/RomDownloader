@@ -17,6 +17,9 @@ namespace RomDownloader.Forms
         public MainForm()
         {
             InitializeComponent();
+            this.StyleManager = msmStyler;
+            msmStyler.Theme = MetroFramework.MetroThemeStyle.Dark;
+            msmStyler.Style = MetroFramework.MetroColorStyle.Purple;
             // Bind the list of all systems to the dropdown box
             cboSystems.DataSource = Core.GetSystemNames();
         }
