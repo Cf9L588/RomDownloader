@@ -66,11 +66,24 @@ namespace RomDownloader.RomSources
             system.Roms = new List<Rom>();
             // decalre the page variable that will hold the html source code for each page
             string page = string.Empty;
-            using (WebClient webClient = new WebClient())
+            HttpWebRequest request = (WebRequest.Create(system.RomListUrl)) as HttpWebRequest;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            var status = response.StatusCode;
+            while (status == HttpStatusCode.OK)
             {
-                // use the web client to download the source code
-                // *** THIS IS THE PART THAT IS FREEZING and the one at the end
-                page = webClient.DownloadString(currentPage);
+                Stream receiveStream = response.GetResponseStream();
+                StreamReader readStream = null;
+
+                if (response.CharacterSet == null)
+                {
+                    readStream = new StreamReader(receiveStream);
+                }
+                else
+                {
+                    readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
+                }
+
+                page = readStream.ReadToEnd();
                 // I thought that the page would return empty if it wasn't a legit page, but it just returns a page with no roms....
                 while (!string.IsNullOrEmpty(page))
                 {
@@ -80,8 +93,9 @@ namespace RomDownloader.RomSources
                     doc.LoadHtml(page);
 
                     // Create a list of nodes containing the roms and their statuses on the current page
-                    var listingNodes = doc.DocumentNode.SelectNodes("//html[1]/body[1]/div[2]/div[1]/div[10]/table[2]/tr[2]/td[1]/table[1]/tr[1]/td[1]/div[1]/font[1]//table/tr")
-                        .Where(node => node.Id == "listitem");
+                    var listingNodes = doc.DocumentNode.SelectNodes("//html/body/div[contains(@id, 'dwrap')]/div[contains(@id, 'dbody')]/div[contains(@id, 'obody')]/table/tr[2]/td");
+                    //var listingNodes = doc.DocumentNode.SelectNodes("//html[1]/body[1]/div[2]/div[1]/div[10]/table[2]/tr[2]/td[1]/table[1]/tr[1]/td[1]/div[1]/font[1]//table/tr")?
+                    //    .Where(node => node.Id == "listitem");
 
                     // this is the work around for ending the loop
                     // if any ROMs are on the page go to the next
@@ -120,12 +134,13 @@ namespace RomDownloader.RomSources
                     currentPage = new Uri(URL, $"roms/{system.Id.Replace(" ", "_")}/ALL/{pageNum * 50}.html").ToString();
                     // This is a delay to try and fix the problem. I hate it
                     Task.Delay(500);
-                    // Get the source code for the next page and loop
-                    page = webClient.DownloadString(currentPage);
+                    request = (WebRequest.Create(new Uri(URL, "roms"))) as HttpWebRequest;
+                    response = (HttpWebResponse)request.GetResponse();
+                    status = response.StatusCode;
                 }
-                // Return the systems list of ROMs
-                return system.Roms;
             }
+            // Return the systems list of ROMs
+            return system.Roms;
         }
 
         private void FixConsoleName(GameConsole system)
