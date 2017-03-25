@@ -84,6 +84,7 @@ namespace RomDownloader.RomSources
                 }
 
                 page = readStream.ReadToEnd();
+                status = HttpStatusCode.Found;
                 // I thought that the page would return empty if it wasn't a legit page, but it just returns a page with no roms....
                 while (!string.IsNullOrEmpty(page))
                 {
@@ -93,9 +94,8 @@ namespace RomDownloader.RomSources
                     doc.LoadHtml(page);
 
                     // Create a list of nodes containing the roms and their statuses on the current page
-                    var listingNodes = doc.DocumentNode.SelectNodes("//html/body/div[contains(@id, 'dwrap')]/div[contains(@id, 'dbody')]/div[contains(@id, 'obody')]/table/tr[2]/td");
-                    //var listingNodes = doc.DocumentNode.SelectNodes("//html[1]/body[1]/div[2]/div[1]/div[10]/table[2]/tr[2]/td[1]/table[1]/tr[1]/td[1]/div[1]/font[1]//table/tr")?
-                    //    .Where(node => node.Id == "listitem");
+                    var listingNodes = doc.DocumentNode.SelectNodes("//html/body/div[contains(@id, 'dwrap')]/div[contains(@id, 'dbody')]/div[contains(@id, 'obody')]/table/tr[2]/td/table/tr/td/"  +
+                        "div[contains(@id, 'csearchajax')]/font/table/tr")?.Where(node => node.Id == "listitem");
 
                     // this is the work around for ending the loop
                     // if any ROMs are on the page go to the next
@@ -134,7 +134,7 @@ namespace RomDownloader.RomSources
                     currentPage = new Uri(URL, $"roms/{system.Id.Replace(" ", "_")}/ALL/{pageNum * 50}.html").ToString();
                     // This is a delay to try and fix the problem. I hate it
                     Task.Delay(500);
-                    request = (WebRequest.Create(new Uri(URL, "roms"))) as HttpWebRequest;
+                    request = (WebRequest.Create(currentPage)) as HttpWebRequest;
                     response = (HttpWebResponse)request.GetResponse();
                     status = response.StatusCode;
                 }
