@@ -8,12 +8,15 @@ namespace RomDownloader.Models
 {
     internal abstract class RomSource
     {
+        internal delegate void RomFoundHandler(Rom rom);
+        internal event RomFoundHandler RomFound;
+        internal delegate void SystemFoundHandler(GameConsole system);
+        internal event SystemFoundHandler SystemFound;
+
         internal string Name { get;  set; }
         internal Uri URL { get;  set; }
         protected List<GameConsole> systemList;
-
-        internal delegate void SystemFoundHandler(GameConsole system);
-        internal event SystemFoundHandler SystemFound;
+        private List<Rom> romList;
 
         internal List<GameConsole> SystemList
         {
@@ -24,6 +27,19 @@ namespace RomDownloader.Models
             set
             {
                 systemList = value;
+            }
+        }
+
+        protected List<Rom> RomList
+        {
+            get
+            {
+                return romList;
+            }
+
+            set
+            {
+                romList = value;
             }
         }
 
@@ -40,11 +56,13 @@ namespace RomDownloader.Models
 
         internal RomSource()
         {
-
+            SystemList = new List<GameConsole>();
+            RomList = new List<Rom>();
         }
 
-        abstract internal Task<List<GameConsole>> GetSystems();
+        abstract internal List<GameConsole> GetSystems();
 
         abstract internal List<Rom> GetSystemRoms(GameConsole system);
+        
     }
 }

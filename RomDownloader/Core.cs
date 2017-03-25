@@ -62,7 +62,9 @@ namespace RomDownloader
                 Assembly.GetAssembly(typeof(RomSource)).GetTypes()
                 .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(RomSource))))
             {
-                sources.Add((RomSource)(Activator.CreateInstance(type)));
+                var source = (RomSource)(Activator.CreateInstance(type));
+                source.SystemFound += OnSystemFound;
+                sources.Add(source);
             }
             sources.Sort();
             Sources = sources;
@@ -77,11 +79,7 @@ namespace RomDownloader
             foreach(var source in Sources)
             {
                 // populate system list from this source if it is null
-                if (source.SystemList == null)
-                {
-                    source.SystemFound += OnSystemFound;
-                    source.GetSystems();
-                }
+                source.GetSystems();
             }
         }
 

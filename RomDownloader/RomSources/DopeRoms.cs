@@ -6,38 +6,51 @@ using System.Threading.Tasks;
 using RomDownloader.Models;
 using HtmlAgilityPack;
 using System.Net;
+using System.IO;
 
 namespace RomDownloader.RomSources
 {
     class DopeRoms : RomSource
     {
+
         public DopeRoms()
         {
             Name = "DopeRoms";
             URL = new Uri("http://doperoms.com");
         }
 
-        internal override async Task<List<GameConsole>> GetSystems()
+        internal override List<GameConsole> GetSystems()
         {
             //use the webclient to grab the source code of the page
-            using (WebClient webClient = new WebClient())
+            HttpWebRequest request = (WebRequest.Create(new Uri(URL, "roms"))) as HttpWebRequest;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            var status = response.StatusCode;
+            if(status == HttpStatusCode.OK)
             {
-                string page = webClient.DownloadString(new Uri(URL, "roms"));
+                Stream receiveStream = response.GetResponseStream();
+                StreamReader readStream = null;
 
+                if (response.CharacterSet == null)
+                {
+                    readStream = new StreamReader(receiveStream);
+                }
+                else
+                {
+                    readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
+                }
+
+                string page = readStream.ReadToEnd();
                 // pass the source code into the html document
                 HtmlDocument doc = new HtmlDocument();
                 doc.LoadHtml(page);
 
                 // navigate the nodes to find the game console listings
-                SystemList = doc.DocumentNode.SelectNodes("//html/body/div/div/div/table[2]/tr/td[1]/font[1]/table/tr/td/table/tr/td/a")
-                   // select the name and the provided url from the node
-                   .Select(n => new GameConsole(n.InnerText, new Uri(URL, n.Attributes["href"].Value), this)).ToList();
-            }
-            // This is an impromptu attempt to fix the system names
-            foreach(var system in SystemList)
-            {
-                FixConsoleName(system);
-                TriggerSystemFound(system);
+                foreach (var node in doc.DocumentNode.SelectNodes("//html/body/div/div/div/table[2]/tr/td[1]/font[1]/table/tr/td/table/tr/td/a"))
+                {
+                    var system = new GameConsole(node.InnerText, new Uri(URL, node.Attributes["href"].Value), this);
+                    SystemList.Add(system);
+                    TriggerSystemFound(system);
+                }
             }
             
             return SystemList; 
