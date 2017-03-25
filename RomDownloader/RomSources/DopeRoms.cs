@@ -253,7 +253,11 @@ namespace RomDownloader.RomSources
             }
         }
 
-        private static Dictionary<string, string> ConsoleNames = new Dictionary<string, string>()
+        // I added the string comparer so that we won't have to worry about cases - Chandler
+        /// <summary>
+        /// This dictionary corrects the names of consoles based on known incorrect values
+        /// </summary>
+        private static Dictionary<string, string> ConsoleNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             { "32x",  "Sega 32X" },
             { "Nintendo Nes", "Nintendo Entertainment System (NES)" },

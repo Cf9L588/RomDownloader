@@ -93,7 +93,8 @@ namespace RomDownloader
         internal List<string> GetSystemNames()
         {
             // Create a hashset so we can add things to it without worrying about duplicates
-            HashSet<string> names = new HashSet<string>();
+            // Added the string comparer to avoid case sensitive mismatching - Chandler
+            HashSet<string> names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             //  add all systems names since we cannot have dups
             SystemList.ForEach(s => names.Add(s.Name));
 
