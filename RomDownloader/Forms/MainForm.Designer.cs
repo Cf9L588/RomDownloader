@@ -37,6 +37,7 @@
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.cboSystems = new MetroFramework.Controls.MetroComboBox();
             this.msmStyler = new MetroFramework.Components.MetroStyleManager(this.components);
+            this.bgwGetRoms = new System.ComponentModel.BackgroundWorker();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.msmStyler)).BeginInit();
@@ -81,6 +82,7 @@
             this.lstRoms.Name = "lstRoms";
             this.lstRoms.Size = new System.Drawing.Size(380, 316);
             this.lstRoms.TabIndex = 7;
+            this.lstRoms.SelectedIndexChanged += new System.EventHandler(this.lstRoms_SelectedIndexChanged);
             // 
             // prgLoadingRoms
             // 
@@ -128,6 +130,11 @@
             // 
             this.msmStyler.Owner = this;
             // 
+            // bgwGetRoms
+            // 
+            this.bgwGetRoms.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwGetRoms_DoWork);
+            this.bgwGetRoms.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwGetRoms_RunWorkerCompleted);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -155,6 +162,7 @@
         private MetroFramework.Controls.MetroProgressSpinner prgLoadingRoms;
         private MetroFramework.Controls.MetroLabel lblLoadingRoms;
         private System.Windows.Forms.ListBox lstRoms;
+        private System.ComponentModel.BackgroundWorker bgwGetRoms;
     }
 }
 

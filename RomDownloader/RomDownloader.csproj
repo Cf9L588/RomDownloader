@@ -74,6 +74,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\RomSource.cs" />
     <Compile Include="RomSources\DopeRoms.cs" />
+    <Compile Include="TheGamesDB.cs" />
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

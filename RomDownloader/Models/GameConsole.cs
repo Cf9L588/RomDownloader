@@ -18,10 +18,6 @@ namespace RomDownloader.Models
         {
             get
             {
-                if(roms == null)
-                {
-                    roms = Source.GetSystemRoms(this);
-                }
                 return roms;
             }
 
@@ -40,6 +36,11 @@ namespace RomDownloader.Models
             RomListUrl = url;
             Source = source;
             Id = Name;
+        }
+
+        internal async Task<List<Rom>> GetRomsAsync()
+        {
+            return await Source.GetSystemRomsAsync(this);
         }
 
     }
