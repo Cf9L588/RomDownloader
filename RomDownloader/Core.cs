@@ -134,6 +134,7 @@ namespace RomDownloader
                 if (system.Roms == null)
                     await system.GetRomsAsync();
 
+
                 foreach(var rom in system.Roms)
                     romNames.Add(rom.Name);
 
