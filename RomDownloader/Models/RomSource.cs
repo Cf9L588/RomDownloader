@@ -62,6 +62,8 @@ namespace RomDownloader.Models
 
         abstract internal List<GameConsole> GetSystems();
 
+        abstract internal Task<List<GameConsole>> GetSystemsAsync();
+
         abstract internal List<Rom> GetSystemRoms(GameConsole system);
 
         abstract internal Task<List<Rom>> GetSystemRomsAsync(GameConsole system);

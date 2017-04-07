@@ -47,7 +47,7 @@ namespace RomDownloader
             // Gather all RomSources in the Assembly
             GetRomSourcesList();
             // get a List of Systems available
-            GetSystemsList();
+            //GetSystemsList();
             SystemRoms = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
         }
 
@@ -75,13 +75,23 @@ namespace RomDownloader
         /// <summary>
         /// Get all GameConsoles on each RomSource
         /// </summary>
-        private static void  GetSystemsList()
+        public static void  GetSystemsList()
         {
             // foreach RomSource in our program
             foreach(var source in Sources)
             {
                 // populate system list from this source if it is null
                 source.GetSystems();
+            }
+        }
+
+        public static async Task  GetSystemsListAsync()
+        {
+            // foreach RomSource in our program
+            foreach (var source in Sources)
+            {
+                // populate system list from this source if it is null
+                await source.GetSystemsAsync();
             }
         }
 
@@ -150,10 +160,6 @@ namespace RomDownloader
             rom.Name = rom.Name.Replace(".zip", "")
                 //Remove the .rar extension
                 .Replace(".rar", "")
-                // Remove the good dump marker
-                .Replace("[!]", "")
-                // Replace the checksum marker
-                .Replace("[c]", "")
                 .Trim();
 
             // get the index of the first occurance of "("
@@ -178,7 +184,7 @@ namespace RomDownloader
                         // I put this here so we can keep track if we know this value
                         bool known = true;
                         // Find the purpose of this value
-                        switch (info)
+                        switch (info.Trim())
                         {
                             case "(U)":
                                 rom.Language = Rom.LanguageType.English;
@@ -213,8 +219,8 @@ namespace RomDownloader
                         {
                             // Remove it from the string
                             rom.Name = rom.Name.Replace(info, "").Trim();
-                            break;
                         }
+                        info = string.Empty;
 
                     }
                 }
@@ -231,6 +237,86 @@ namespace RomDownloader
                 // if another instance occurs in the string, add it's value to the current lastIndex
                 lastIndex = nextIndex != -1 ? lastIndex + nextIndex : -1;
             }
+            lastIndex = rom.Name.IndexOf("[");
+            // Loop as long as there is a "[" or that the lastindex point is less than the total length
+            while (lastIndex != -1 && rom.Name.Length > lastIndex)
+            {
+                // Start with an empty string
+                string info = string.Empty;
+                // Loop from the lastindex where a "(" was found to the end of the word
+                for (int i = lastIndex; i < rom.Name.Length; i++)
+                {
+                    // Add the current character to the info variable
+                    // First one will be "("
+                    char c = rom.Name[i];
+                    info += c;
+                    // If the character that we are on is "]"
+                    if (c == ']')
+                    {
+                        // I put this here so we can keep track if we know this value
+                        bool known = true;
+                        // Find the purpose of this value
+                        switch (info)
+                        {
+                            case "[!]":
+                                break;
+                            case "[c]":
+                                break;
+                            default:
+                                // If we do not know this value we shouldn't remove it
+                                // instead, we set the lastIndex to one character after the current char
+                                // when we get here the current char will always be "]"
+                                // this means that below, we will search for the next [] in the string after this one
+                                lastIndex = i + 1;
+                                //known = false;
+                                break;
+                        }
+
+                        // If we knew the purpose of the [] value
+                        if (known)
+                        {
+                            // Remove it from the string
+                            rom.Name = rom.Name.Replace(info, "").Trim();
+                            break;
+                        }
+
+                    }
+                }
+                //if lastIndex is before the end of the string we find the index of the next "("
+                int nextIndex; // = lastIndex < rom.Name.Length ? rom.Name.Substring(lastIndex).IndexOf("(") : -1;
+                if (lastIndex < rom.Name.Length)
+                {
+                    nextIndex = rom.Name.Substring(lastIndex).IndexOf("[");
+                }
+                else
+                {
+                    nextIndex = -1;
+                }
+                // if another instance occurs in the string, add it's value to the current lastIndex
+                lastIndex = nextIndex != -1 ? lastIndex + nextIndex : -1;
+            }
         }
+        
+        // I added the string comparer so that we won't have to worry about cases - Chandler
+        /// <summary>
+        /// This dictionary corrects the names of consoles based on known incorrect values
+        /// </summary>
+        internal static Dictionary<string, string> ConsoleNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "3do",  "3DO" },
+            { "32x",  "Sega 32X" },
+            { "Nintendo Nes", "Nintendo Entertainment System (NES)" },
+            { "Amiga Cd32", "Amiga CD32"},
+            { "Amstrad Cpc", "Amstrad CPC" },
+            { "Apple Ii", "Apple II" },
+            { "Atari Jaguar Cd", "Atari Jaguar CD" },
+            { "Atari St", "Atari ST" },
+            { "Atari Xe", "Atari XE" },
+            { "Casio Pb-1000", "Casio PV-1000" },
+            { "Dragon 32-64", "Dragon 32/64" },
+            { "Epoch super Cassette Vision", "Epoch Super Cassette Vision" },
+            { "Famicom Disk", "Famicom Disk System" },
+            { "Neo Geo Cd", "Neo Geo CD" }
+        };
     }
 }

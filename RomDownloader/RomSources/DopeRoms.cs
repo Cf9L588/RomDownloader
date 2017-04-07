@@ -56,7 +56,44 @@ namespace RomDownloader.RomSources
             
             return SystemList; 
         }
-        
+
+        internal override async Task<List<GameConsole>> GetSystemsAsync()
+        {//use the webclient to grab the source code of the page
+            HttpWebRequest request = (WebRequest.Create(new Uri(URL, "roms"))) as HttpWebRequest;
+            HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync();
+            var status = response.StatusCode;
+            if (status == HttpStatusCode.OK)
+            {
+                Stream receiveStream = response.GetResponseStream();
+                StreamReader readStream = null;
+
+                if (response.CharacterSet == null)
+                {
+                    readStream = new StreamReader(receiveStream);
+                }
+                else
+                {
+                    readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
+                }
+
+                string page = readStream.ReadToEnd();
+                // pass the source code into the html document
+                HtmlDocument doc = new HtmlDocument();
+                doc.LoadHtml(page);
+
+                // navigate the nodes to find the game console listings
+                foreach (var node in doc.DocumentNode.SelectNodes("//html/body/div/div/div/table[2]/tr/td[1]/font[1]/table/tr/td/table/tr/td/a"))
+                {
+                    var system = new GameConsole(node.InnerText, new Uri(URL, node.Attributes["href"].Value), this);
+                    FixConsoleName(system);
+                    SystemList.Add(system);
+                    TriggerSystemFound(system);
+                }
+            }
+
+            return SystemList;
+        }
+
         internal override List<Rom> GetSystemRoms(GameConsole system)
         {
             // scalar value to track the current page since pages iterate by values of 50
@@ -143,8 +180,7 @@ namespace RomDownloader.RomSources
             // Return the systems list of ROMs
             return system.Roms;
         }
-
-
+        
         internal override async Task<List<Rom>> GetSystemRomsAsync(GameConsole system)
         {// scalar value to track the current page since pages iterate by values of 50
             int pageNum = 0;
@@ -220,8 +256,6 @@ namespace RomDownloader.RomSources
                     pageNum++;
                     // Construct the next page URL
                     currentPage = new Uri(URL, $"roms/{system.Id.Replace(" ", "_")}/ALL/{pageNum * 50}.html").ToString();
-                    // This is a delay to try and fix the problem. I hate it
-                    Task.Delay(500);
                     request = (WebRequest.Create(currentPage)) as HttpWebRequest;
                     response = (HttpWebResponse)await request.GetResponseAsync();
                     status = response.StatusCode;
@@ -236,8 +270,8 @@ namespace RomDownloader.RomSources
             // There's a dictionary at the end of this class
             // it contains the name from the site and the common name
             system.Name = system.Name.Trim();
-            if (ConsoleNames.ContainsKey(system.Id))
-                system.Name = ConsoleNames[system.Id];
+            if (Core.ConsoleNames.ContainsKey(system.Id))
+                system.Name = Core.ConsoleNames[system.Id];
         }
         
         private Rom CreateRomsFromNodes(HtmlNode mainNode, HtmlNodeCollection StatusNodes, GameConsole system)
@@ -281,27 +315,5 @@ namespace RomDownloader.RomSources
             return output;
         }
 
-
-
-        // I added the string comparer so that we won't have to worry about cases - Chandler
-        /// <summary>
-        /// This dictionary corrects the names of consoles based on known incorrect values
-        /// </summary>
-        private static Dictionary<string, string> ConsoleNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-        {
-            { "32x",  "Sega 32X" },
-            { "Nintendo Nes", "Nintendo Entertainment System (NES)" },
-            { "Amiga Cd32", "Amiga CD32"},
-            { "Amstrad Cpc", "Amstrad CPC" },
-            { "Apple Ii", "Apple II" },
-            { "Atari Jaguar Cd", "Atari Jaguar CD" },
-            { "Atari St", "Atari ST" },
-            { "Atari Xe", "Atari XE" },
-            { "Casio Pb-1000", "Casio PV-1000" },
-            { "Dragon 32-64", "Dragon 32/64" },
-            { "Epoch super Cassette Vision", "Epoch Super Cassette Vision" },
-            { "Famicom Disk", "Famicom Disk System" },
-            { "Neo Geo Cd", "Neo Geo CD" }
-        };
     }
 }
