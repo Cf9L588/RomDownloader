@@ -44,19 +44,19 @@ namespace RomDownloader
             GameInfo output = null;
             if (node != null)
             {
+                string id = null;
+                string title = null;
+                string platformId = null;
+                string platform = null;
+                string overview = null;
+                List<string> genres = new List<string>();
+                int? players = null;
+                bool coOp = false;
+                string publisher = null;
+                string developer = null;
+                List<GameInfo.Image> images = new List<GameInfo.Image>();
                 foreach (XmlNode child in node.ChildNodes)
                 {
-                    string id = null;
-                    string title = null;
-                    string platformId = null;
-                    string platform = null;
-                    string overview = null;
-                    List<string> genres = new List<string>();
-                    int? players = null;
-                    bool coOp = false;
-                    string publisher = null;
-                    string developer = null;
-                    List<GameInfo.Image> images = new List<GameInfo.Image>();
                     switch (child.Name)
                     {
                         case "id":
@@ -131,8 +131,8 @@ namespace RomDownloader
                             }
                             break;
                     }
-                    output = new GameInfo(id, title, genres, coOp, players, publisher, developer, images);
                 }
+                output = new GameInfo(id, title, genres, coOp, players, publisher, developer, images);
             }
             return output;
         }
