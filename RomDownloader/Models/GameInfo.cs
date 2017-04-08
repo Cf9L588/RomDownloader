@@ -16,9 +16,6 @@ namespace RomDownloader.Models
         private int players;
         private string publisher;
         private string developer;
-
-        
-
         #endregion
 
         #region properties
@@ -124,6 +121,7 @@ namespace RomDownloader.Models
             Publisher = publisher;
             Developer = developer;
         }
+
         public GameInfo(string id, string title, string genres, bool coOp, int players): this (id, title, genres, coOp, players, null, null)
         {
         }

@@ -12,7 +12,7 @@ namespace RomDownloader
 {
     internal static class TheGamesDB
     {
-        private static Uri baseUri = new Uri("http://thegamesdb.net/api/");
+        private static Uri baseUri = new Uri("http://thegamesdb.net");
 
         internal static async Task GetGame(Rom rom)
         {
@@ -21,8 +21,8 @@ namespace RomDownloader
 
         internal static async Task GetGame(string rom, string system)
         {
-            var test = new Uri(baseUri, $"GetGame.php?exactname={rom}&platform={system}");
-            HttpWebRequest request = (WebRequest.Create(test.ToString())) as HttpWebRequest;
+            var apiURL = new Uri(baseUri, $"api/GetGame.php?exactname={rom}&platform={system}");
+            HttpWebRequest request = (WebRequest.Create(apiURL.ToString())) as HttpWebRequest;
             HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync();
             Stream receiveStream = response.GetResponseStream();
             StreamReader readStream = null;
@@ -39,6 +39,9 @@ namespace RomDownloader
             string page = readStream.ReadToEnd();
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(page);
+
+            }
+            
         }
 
     }
