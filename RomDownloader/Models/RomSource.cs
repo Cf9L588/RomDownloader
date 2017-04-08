@@ -17,6 +17,7 @@ namespace RomDownloader.Models
         internal Uri URL { get;  set; }
         protected List<GameConsole> systemList;
         private List<Rom> romList;
+        
 
         internal List<GameConsole> SystemList
         {
