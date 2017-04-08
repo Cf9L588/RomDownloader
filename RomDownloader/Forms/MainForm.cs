@@ -54,9 +54,10 @@ namespace RomDownloader.Forms
         {
         }
 
-        private void lstRoms_SelectedIndexChanged(object sender, EventArgs e)
+        private async void lstRoms_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TheGamesDB.GetGame(lstRoms.SelectedItem as string, cboSystems.SelectedItem as string); 
+            var getInfo = TheGamesDB.GetGame(lstRoms.SelectedItem as string, cboSystems.SelectedItem as string);
+            var info = await getInfo;
         }
 
         private async void MainForm_Shown(object sender, EventArgs e)

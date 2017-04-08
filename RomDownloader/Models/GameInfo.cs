@@ -13,14 +13,10 @@ namespace RomDownloader.Models
         private string title;
         private List<string> genres;
         private bool coOp;
-        private int players;
+        private int? players;
         private string publisher;
         private string developer;
         private List<Image> images;
-        
-
-        
-
         #endregion
 
         #region properties
@@ -76,7 +72,7 @@ namespace RomDownloader.Models
             }
         }
 
-        public int Players
+        public int? Players
         {
             get
             {
@@ -131,7 +127,7 @@ namespace RomDownloader.Models
 
         #endregion
 
-        public GameInfo(string id, string title, List<string> genres, bool coOp, int players, string publisher, string developer, List<Image> images)
+        public GameInfo(string id, string title, List<string> genres, bool coOp, int? players, string publisher, string developer, List<Image> images)
         {
             Id = id;
             Title = title;
@@ -142,7 +138,7 @@ namespace RomDownloader.Models
             Developer = developer;
             this.Images = images;   
         }
-        public GameInfo(string id, string title, List<string> genres, bool coOp, int players, List<Image> images) : this (id, title, genres, coOp, players, null, null, images)
+        public GameInfo(string id, string title, List<string> genres, bool coOp, int? players, List<Image> images) : this (id, title, genres, coOp, players, null, null, images)
         {
         }
 
@@ -160,7 +156,9 @@ namespace RomDownloader.Models
             public enum ImageStyle
             {
                 ScreenShot,
-                BoxArt
+                BoxArt,
+                ClearLogo,
+                Banner
             }
             
         }

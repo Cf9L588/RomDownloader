@@ -14,12 +14,12 @@ namespace RomDownloader
     {
         private static Uri baseUri = new Uri("http://thegamesdb.net");
 
-        internal static async Task GetGame(Rom rom)
+        internal static async Task<GameInfo> GetGame(Rom rom)
         {
-            await GetGame(rom.Name, rom.System.Name);
+            return await GetGame(rom.Name, rom.System.Name);
         }
 
-        internal static async Task GetGame(string rom, string system)
+        internal static async Task<GameInfo> GetGame(string rom, string system)
         {
             var apiURL = new Uri(baseUri, $"api/GetGame.php?exactname={rom}&platform={system}");
             HttpWebRequest request = (WebRequest.Create(apiURL.ToString())) as HttpWebRequest;
@@ -40,8 +40,101 @@ namespace RomDownloader
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(page);
 
+            XmlNode node = xDoc.SelectSingleNode("Data/Game");
+            GameInfo output = null;
+            if (node != null)
+            {
+                foreach (XmlNode child in node.ChildNodes)
+                {
+                    string id = null;
+                    string title = null;
+                    string platformId = null;
+                    string platform = null;
+                    string overview = null;
+                    List<string> genres = new List<string>();
+                    int? players = null;
+                    bool coOp = false;
+                    string publisher = null;
+                    string developer = null;
+                    List<GameInfo.Image> images = new List<GameInfo.Image>();
+                    switch (child.Name)
+                    {
+                        case "id":
+                            id = child.InnerText;
+                            break;
+                        case "GameTitle":
+                            title = child.InnerText;
+                            break;
+                        case "PlatformId":
+                            platformId = child.InnerText;
+                            break;
+                        case "Platform":
+                            platform = child.InnerText;
+                            break;
+                        case "Overview":
+                            overview = child.InnerText;
+                            break;
+                        case "Genres":
+                            foreach (XmlNode genre in child.ChildNodes)
+                            {
+                                genres.Add(genre.InnerText);
+                            }
+                            break;
+                        case "Players":
+                            int holder;
+                            if(int.TryParse(child.InnerText, out holder))
+                            {
+                                players = holder;
+                            }
+                            players = Convert.ToInt32(child.InnerText);
+                            break;
+                        case "Co-op":
+                            switch (child.InnerText)
+                            {
+                                case "Yes":
+                                    coOp = true;
+                                    break;
+                                case "No":
+                                    coOp = false;
+                                    break;
+                            }
+                            break;
+                        case "Publisher":
+                            publisher = child.InnerText;
+                            break;
+                        case "Developer":
+                            developer = child.InnerText;
+                            break;
+                        case "Images":
+                            foreach (XmlNode imageNode in child.ChildNodes)
+                            {
+                                GameInfo.Image.ImageStyle style;
+                                switch (imageNode.Name)
+                                {
+                                    case "boxart":
+                                        style = GameInfo.Image.ImageStyle.BoxArt;
+                                        break;
+                                    case "screenshot":
+                                        style = GameInfo.Image.ImageStyle.ScreenShot;
+                                        break;
+                                    case "clearlogo":
+                                        style = GameInfo.Image.ImageStyle.ClearLogo;
+                                        break;
+                                    case "banner":
+                                        style = GameInfo.Image.ImageStyle.Banner;
+                                        break;
+                                    default:
+                                        throw new NotImplementedException();
+                                }
+                                string url = new Uri(baseUri, imageNode.InnerText).ToString();
+                                images.Add(new GameInfo.Image(url, style));
+                            }
+                            break;
+                    }
+                    output = new GameInfo(id, title, genres, coOp, players, publisher, developer, images);
+                }
             }
-            
+            return output;
         }
 
     }
