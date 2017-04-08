@@ -35,6 +35,7 @@
             this.prgLoadingRoms = new MetroFramework.Controls.MetroProgressSpinner();
             this.lblLoading = new MetroFramework.Controls.MetroLabel();
             this.cboSystems = new MetroFramework.Controls.MetroComboBox();
+            this.btnOpenRomInfo = new MetroFramework.Controls.MetroTile();
             ((System.ComponentModel.ISupportInitialize)(this.msmStyler)).BeginInit();
             this.SuspendLayout();
             // 
@@ -95,11 +96,26 @@
             this.cboSystems.UseSelectable = true;
             this.cboSystems.SelectedIndexChanged += new System.EventHandler(this.cboSystems_SelectedIndexChanged);
             // 
+            // btnOpenRomInfo
+            // 
+            this.btnOpenRomInfo.ActiveControl = null;
+            this.btnOpenRomInfo.BackColor = System.Drawing.Color.White;
+            this.btnOpenRomInfo.Location = new System.Drawing.Point(23, 549);
+            this.btnOpenRomInfo.Name = "btnOpenRomInfo";
+            this.btnOpenRomInfo.Size = new System.Drawing.Size(85, 36);
+            this.btnOpenRomInfo.Style = MetroFramework.MetroColorStyle.Purple;
+            this.btnOpenRomInfo.TabIndex = 13;
+            this.btnOpenRomInfo.Text = "Open Info";
+            this.btnOpenRomInfo.UseSelectable = true;
+            this.btnOpenRomInfo.Visible = false;
+            this.btnOpenRomInfo.Click += new System.EventHandler(this.btnOpenRomInfo_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(344, 561);
+            this.ClientSize = new System.Drawing.Size(344, 608);
+            this.Controls.Add(this.btnOpenRomInfo);
             this.Controls.Add(this.lstRoms);
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.prgLoadingRoms);
@@ -123,6 +139,7 @@
         private MetroFramework.Controls.MetroProgressSpinner prgLoadingRoms;
         private MetroFramework.Controls.MetroLabel lblLoading;
         private MetroFramework.Controls.MetroComboBox cboSystems;
+        private MetroFramework.Controls.MetroTile btnOpenRomInfo;
     }
 }
 

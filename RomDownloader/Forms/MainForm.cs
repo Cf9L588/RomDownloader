@@ -56,8 +56,16 @@ namespace RomDownloader.Forms
 
         private async void lstRoms_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var getInfo = TheGamesDB.GetGame(lstRoms.SelectedItem as string, cboSystems.SelectedItem as string);
-            GameInfo info = await getInfo;
+            int index = lstRoms.SelectedIndex;
+            
+            if (index != -1)
+            {
+                btnOpenRomInfo.Visible = true;
+            }
+            else
+            {
+                btnOpenRomInfo.Visible = false;
+            }
         }
 
         private async void MainForm_Shown(object sender, EventArgs e)
@@ -74,6 +82,27 @@ namespace RomDownloader.Forms
             prgLoadingRoms.Visible = false;
             cboSystems.Enabled = true;
             cboSystems.DataSource = romList;
+        }
+
+        private void btnOpenRomInfo_Click(object sender, EventArgs e)
+        {
+            NewFormHandler();
+        }
+
+        private async void NewFormHandler()
+        {
+            btnOpenRomInfo.Enabled = false;
+            var getInfo = TheGamesDB.GetGame(lstRoms.SelectedItem as string, cboSystems.SelectedItem as string);
+            GameInfo info = await getInfo;
+            this.Hide();
+            RomViewerForm InfoViewer = new RomViewerForm(info);
+            InfoViewer.FormClosing += (o, e) => this.Show();
+            InfoViewer.FormClosing += this.EnableButton;
+            InfoViewer.Show();
+        }
+        private void EnableButton (object sender, FormClosingEventArgs e)
+        {
+            btnOpenRomInfo.Enabled = true;
         }
     }
 }

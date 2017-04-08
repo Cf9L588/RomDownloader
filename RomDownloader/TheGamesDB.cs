@@ -123,6 +123,9 @@ namespace RomDownloader
                                     case "banner":
                                         style = GameInfo.Image.ImageStyle.Banner;
                                         break;
+                                    case "fanart":
+                                        style = GameInfo.Image.ImageStyle.FanArt;
+                                        break;
                                     default:
                                         throw new NotImplementedException();
                                 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RomDownloader.Models
 {
-    class GameInfo
+    public class GameInfo
     {
         #region fields
         private string id;
@@ -158,7 +158,8 @@ namespace RomDownloader.Models
                 ScreenShot,
                 BoxArt,
                 ClearLogo,
-                Banner
+                Banner,
+                FanArt
             }
             
         }
