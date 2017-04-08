@@ -11,11 +11,16 @@ namespace RomDownloader.Models
         #region fields
         private string id;
         private string title;
-        private string genres;
+        private List<string> genres;
         private bool coOp;
         private int players;
         private string publisher;
         private string developer;
+        private List<Image> images;
+        
+
+        
+
         #endregion
 
         #region properties
@@ -45,7 +50,7 @@ namespace RomDownloader.Models
             }
         }
 
-        public string Genres
+        public List<string> Genres
         {
             get
             {
@@ -109,9 +114,24 @@ namespace RomDownloader.Models
                 developer = value;
             }
         }
+
+        internal List<Image> Images
+        {
+            get
+            {
+                return images;
+            }
+
+            set
+            {
+                images = value;
+            }
+        }
+
+
         #endregion
 
-        public GameInfo(string id, string title, string genres, bool coOp, int players, string publisher, string developer)
+        public GameInfo(string id, string title, List<string> genres, bool coOp, int players, string publisher, string developer, List<Image> images)
         {
             Id = id;
             Title = title;
@@ -120,11 +140,29 @@ namespace RomDownloader.Models
             Players = players;
             Publisher = publisher;
             Developer = developer;
+            this.Images = images;   
         }
-
-        public GameInfo(string id, string title, string genres, bool coOp, int players): this (id, title, genres, coOp, players, null, null)
+        public GameInfo(string id, string title, List<string> genres, bool coOp, int players, List<Image> images) : this (id, title, genres, coOp, players, null, null, images)
         {
         }
 
+        public class Image
+        {
+            public string Url;
+            public ImageStyle Style;
+
+            public Image(string url, ImageStyle style)
+            {
+                Url = url;
+                Style = style;
+            }
+
+            public enum ImageStyle
+            {
+                ScreenShot,
+                BoxArt
+            }
+            
+        }
     }
 }
