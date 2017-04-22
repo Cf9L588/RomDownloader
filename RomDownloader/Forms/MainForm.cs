@@ -92,10 +92,9 @@ namespace RomDownloader.Forms
         private async void NewFormHandler()
         {
             btnOpenRomInfo.Enabled = false;
-            var getInfo = TheGamesDB.GetGame(lstRoms.SelectedItem as string, cboSystems.SelectedItem as string);
-            GameInfo info = await getInfo;
+           
             this.Hide();
-            RomViewerForm InfoViewer = new RomViewerForm(info);
+            RomViewerForm InfoViewer = new RomViewerForm(lstRoms.SelectedItem as string, cboSystems.SelectedItem as string);
             InfoViewer.FormClosing += (o, e) => this.Show();
             InfoViewer.FormClosing += this.EnableButton;
             InfoViewer.Show();

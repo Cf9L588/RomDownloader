@@ -14,10 +14,22 @@ namespace RomDownloader.Forms
 {
     public partial class RomViewerForm : MetroForm
     {
+        string romName, systemName;
+        GameInfo info;
+
+        public RomViewerForm(string romName, string systemName)
+        {
+            InitializeComponent();
+            this.romName = romName;
+            this.systemName = systemName;
+            lblInfo.Text = "Information: " + romName;
+        }
+
         public RomViewerForm(GameInfo info)
         {
             InitializeComponent();
-            lblInfo.Text += info.Title;
+            this.info = info;
+            lblInfo.Text = "Information: " + romName;
         }
 
         private void RomViewerForm_Load(object sender, EventArgs e)
@@ -31,9 +43,18 @@ namespace RomDownloader.Forms
             this.Close();
         }
 
-        private void RomViewerForm_FormClosing(object sender, FormClosingEventArgs e)
+        private async void RomViewerForm_Shown(object sender, EventArgs e)
         {
-            
+            if (info == null)
+            {
+                var getInfo = TheGamesDB.GetGame(romName, systemName);
+                info = await getInfo;
+                lblInfo.Text = "Information: " + info?.Title ?? romName;
+            }
+        }
+
+        private  void RomViewerForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
         }
     }
 }

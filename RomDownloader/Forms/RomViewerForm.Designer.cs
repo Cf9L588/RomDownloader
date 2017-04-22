@@ -63,6 +63,7 @@
             this.Text = "RomViewerForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RomViewerForm_FormClosing);
             this.Load += new System.EventHandler(this.RomViewerForm_Load);
+            this.Shown += new System.EventHandler(this.RomViewerForm_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
