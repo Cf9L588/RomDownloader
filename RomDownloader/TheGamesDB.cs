@@ -157,6 +157,10 @@ namespace RomDownloader
                 }
                 output = new GameInfo(id, title, genres, coOp, players, publisher, developer, images);
             }
+            else
+            {
+                output = new GameInfo(null, rom, new List<string>(), false, 1, new List<GameInfo.Image>());
+            }
             return output;
         }
 
