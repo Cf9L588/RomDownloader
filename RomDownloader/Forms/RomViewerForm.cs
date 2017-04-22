@@ -29,7 +29,7 @@ namespace RomDownloader.Forms
         {
             InitializeComponent();
             this.info = info;
-            lblInfo.Text = "Information: " + romName;
+            lblInfo.Text = "Information: " + info.Title;
         }
 
         private void RomViewerForm_Load(object sender, EventArgs e)

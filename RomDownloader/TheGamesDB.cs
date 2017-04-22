@@ -129,7 +129,27 @@ namespace RomDownloader
                                     default:
                                         throw new NotImplementedException();
                                 }
-                                string url = new Uri(baseUri, imageNode.InnerText).ToString();
+
+                                string imageUri = null;
+                                if(imageNode.ChildNodes.Count == 1)
+                                {
+                                    imageUri = imageNode.InnerText;
+                                }
+                                else
+                                {
+                                    foreach (XmlNode imageSizeNode in imageNode.ChildNodes)
+                                    {
+                                        if (imageSizeNode.Name == "original")
+                                        {
+                                            imageUri = imageSizeNode.InnerText;
+                                        }
+                                    }
+                                }
+                                if (!imageUri.StartsWith("banners"))
+                                {
+                                    imageUri = "banners/" + imageUri;
+                                }
+                                string url = new Uri(baseUri, imageUri).ToString();
                                 images.Add(new GameInfo.Image(url, style));
                             }
                             break;
