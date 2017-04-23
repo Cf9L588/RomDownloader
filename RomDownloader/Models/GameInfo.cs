@@ -17,6 +17,7 @@ namespace RomDownloader.Models
         private string publisher;
         private string developer;
         private List<Image> images;
+        private string overview;
         #endregion
 
         #region properties
@@ -124,10 +125,23 @@ namespace RomDownloader.Models
             }
         }
 
+        public string Overview
+        {
+            get
+            {
+                return overview;
+            }
+
+            set
+            {
+                overview = value;
+            }
+        }
+
 
         #endregion
 
-        public GameInfo(string id, string title, List<string> genres, bool coOp, int? players, string publisher, string developer, List<Image> images)
+        public GameInfo(string id, string title, List<string> genres, bool coOp, int? players, string publisher, string developer, List<Image> images, string overview)
         {
             Id = id;
             Title = title;
@@ -136,9 +150,10 @@ namespace RomDownloader.Models
             Players = players;
             Publisher = publisher;
             Developer = developer;
-            this.Images = images;   
+            this.Images = images;
+            Overview = overview;
         }
-        public GameInfo(string id, string title, List<string> genres, bool coOp, int? players, List<Image> images) : this (id, title, genres, coOp, players, null, null, images)
+        public GameInfo(string id, string title, List<string> genres, bool coOp, int? players, List<Image> images, string overview) : this (id, title, genres, coOp, players, null, null, images, overview)
         {
         }
 
@@ -155,8 +170,10 @@ namespace RomDownloader.Models
 
             public enum ImageStyle
             {
+                Unknown,
                 ScreenShot,
-                BoxArt,
+                BoxArt_Front,
+                BoxArt_Back,
                 ClearLogo,
                 Banner,
                 FanArt

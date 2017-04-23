@@ -45,8 +45,12 @@ namespace RomDownloader.Forms
                 info = await getInfo;
                 
             }
-            var boxArt = info.Images.Where(img => img.Style == GameInfo.Image.ImageStyle.BoxArt).Select(img=> img.Url);
+            var boxArt = info.Images.Where(img => img.Style == GameInfo.Image.ImageStyle.BoxArt_Front)?.Select(img => img.Url)
+                ?? info.Images.Where(img => img.Style == GameInfo.Image.ImageStyle.BoxArt_Back).Select(img => img.Url);
+            var screenshots = info.Images.Where(img => img.Style == GameInfo.Image.ImageStyle.ScreenShot).Select(img => img.Url);
+
             lblRomTitle.Text = info.Title;
+            lblOverview.Text = info.Overview;
 
             if (boxArt.Any())
             {
@@ -55,6 +59,10 @@ namespace RomDownloader.Forms
             else
             {
                 picBoxArt.Image = Resources.NoRomImg;
+            }
+            if (screenshots.Any())
+            {
+                picScreenshot1.Load(screenshots.First());
             }
         }
 

@@ -12,6 +12,8 @@ namespace RomDownloader
 {
     internal static class TheGamesDB
     {
+        private const string noDataOverview = "No rom data found.";
+
         private static Uri baseUri = new Uri("http://thegamesdb.net");
 
         internal static async Task<GameInfo> GetGame(Rom rom)
@@ -108,11 +110,22 @@ namespace RomDownloader
                         case "Images":
                             foreach (XmlNode imageNode in child.ChildNodes)
                             {
-                                GameInfo.Image.ImageStyle style;
+                                GameInfo.Image.ImageStyle style = GameInfo.Image.ImageStyle.Unknown;
                                 switch (imageNode.Name)
                                 {
                                     case "boxart":
-                                        style = GameInfo.Image.ImageStyle.BoxArt;
+                                        //style = GameInfo.Image.ImageStyle.BoxArt;
+                                        switch (imageNode.Attributes["side"].Value)
+                                        {
+                                            case "back":
+                                                style = GameInfo.Image.ImageStyle.BoxArt_Back;
+                                                break;
+                                            case "front":
+                                                style = GameInfo.Image.ImageStyle.BoxArt_Front;
+                                                break;
+                                            default:
+                                                break;
+                                        }
                                         break;
                                     case "screenshot":
                                         style = GameInfo.Image.ImageStyle.ScreenShot;
@@ -155,11 +168,11 @@ namespace RomDownloader
                             break;
                     }
                 }
-                output = new GameInfo(id, title, genres, coOp, players, publisher, developer, images);
+                output = new GameInfo(id, title, genres, coOp, players, publisher, developer, images, overview);
             }
             else
             {
-                output = new GameInfo(null, rom, new List<string>(), false, 1, new List<GameInfo.Image>());
+                output = new GameInfo(null, rom, new List<string>(), false, 1, new List<GameInfo.Image>(), noDataOverview);
             }
             return output;
         }
