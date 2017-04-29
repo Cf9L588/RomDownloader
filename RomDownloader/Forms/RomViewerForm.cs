@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RomDownloader.Models;
 using RomDownloader.Properties;
+using MetroFramework.Controls;
 
 namespace RomDownloader.Forms
 {
@@ -64,15 +65,32 @@ namespace RomDownloader.Forms
             {
                 picScreenshot1.Load(screenshots.First());
             }
-        }
+            if (info.CoOp != null)
+            {
+                MetroLabel lblCoOp = new MetroLabel();
+                lblCoOp.AutoSize = true;
+                lblCoOp.Text = "Co-Op: ";
+                lblCoOp.Text += info.CoOp == true ? "yes": "no";
+                flpRomDescriptions.Controls.Add(lblCoOp);
+            }
+            if (info.Genres.Count > 0)
+            {
+                MetroLabel lblGenres = new MetroLabel();
+                lblGenres.AutoSize = true;
+                lblGenres.Text = "Genres: ";
+                lblGenres.Text += info.Genres[0];
 
-        private void pnlHeader_Paint(object sender, PaintEventArgs e)
-        {
-
+                for (int i = 1; i < info.Genres.Count; i++)
+                {
+                    lblGenres.Text += $", {info.Genres[i]}";
+                }
+                flpRomDescriptions.Controls.Add(lblGenres);
+            }
         }
 
         private void RomViewerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
         }
+
     }
 }

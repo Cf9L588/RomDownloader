@@ -12,7 +12,7 @@ namespace RomDownloader.Models
         private string id;
         private string title;
         private List<string> genres;
-        private bool coOp;
+        private bool? coOp;
         private int? players;
         private string publisher;
         private string developer;
@@ -60,7 +60,7 @@ namespace RomDownloader.Models
             }
         }
 
-        public bool CoOp
+        public bool? CoOp
         {
             get
             {
@@ -141,7 +141,7 @@ namespace RomDownloader.Models
 
         #endregion
 
-        public GameInfo(string id, string title, List<string> genres, bool coOp, int? players, string publisher, string developer, List<Image> images, string overview)
+        public GameInfo(string id, string title, List<string> genres, bool? coOp, int? players, string publisher, string developer, List<Image> images, string overview)
         {
             Id = id;
             Title = title;
@@ -153,7 +153,7 @@ namespace RomDownloader.Models
             this.Images = images;
             Overview = overview;
         }
-        public GameInfo(string id, string title, List<string> genres, bool coOp, int? players, List<Image> images, string overview) : this (id, title, genres, coOp, players, null, null, images, overview)
+        public GameInfo(string id, string title, List<string> genres, bool? coOp, int? players, List<Image> images, string overview) : this (id, title, genres, coOp, players, null, null, images, overview)
         {
         }
 

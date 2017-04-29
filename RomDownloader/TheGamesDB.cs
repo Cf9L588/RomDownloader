@@ -53,7 +53,7 @@ namespace RomDownloader
                 string overview = null;
                 List<string> genres = new List<string>();
                 int? players = null;
-                bool coOp = false;
+                bool? coOp = null;
                 string publisher = null;
                 string developer = null;
                 List<GameInfo.Image> images = new List<GameInfo.Image>();
@@ -172,7 +172,7 @@ namespace RomDownloader
             }
             else
             {
-                output = new GameInfo(null, rom, new List<string>(), false, 1, new List<GameInfo.Image>(), noDataOverview);
+                output = new GameInfo(null, rom, new List<string>(), null, 1, new List<GameInfo.Image>(), noDataOverview);
             }
             return output;
         }

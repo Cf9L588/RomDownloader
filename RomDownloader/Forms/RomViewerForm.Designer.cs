@@ -30,10 +30,12 @@
         {
             this.picBoxArt = new System.Windows.Forms.PictureBox();
             this.pnlHeader = new MetroFramework.Controls.MetroPanel();
-            this.lblRomTitle = new MetroFramework.Controls.MetroLabel();
             this.lblOverview = new MetroFramework.Controls.MetroLabel();
+            this.lblRomTitle = new MetroFramework.Controls.MetroLabel();
             this.pnlScreenshots = new MetroFramework.Controls.MetroPanel();
             this.picScreenshot1 = new System.Windows.Forms.PictureBox();
+            this.flpRomDescriptions = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnDownload = new MetroFramework.Controls.MetroTile();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxArt)).BeginInit();
             this.pnlHeader.SuspendLayout();
             this.pnlScreenshots.SuspendLayout();
@@ -68,7 +70,15 @@
             this.pnlHeader.VerticalScrollbarBarColor = true;
             this.pnlHeader.VerticalScrollbarHighlightOnWheel = false;
             this.pnlHeader.VerticalScrollbarSize = 10;
-            this.pnlHeader.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlHeader_Paint);
+            // 
+            // lblOverview
+            // 
+            this.lblOverview.Location = new System.Drawing.Point(0, 463);
+            this.lblOverview.Name = "lblOverview";
+            this.lblOverview.Size = new System.Drawing.Size(473, 312);
+            this.lblOverview.TabIndex = 3;
+            this.lblOverview.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblOverview.WrapToLine = true;
             // 
             // lblRomTitle
             // 
@@ -79,15 +89,6 @@
             this.lblRomTitle.Size = new System.Drawing.Size(473, 50);
             this.lblRomTitle.TabIndex = 2;
             this.lblRomTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // lblOverview
-            // 
-            this.lblOverview.Location = new System.Drawing.Point(0, 463);
-            this.lblOverview.Name = "lblOverview";
-            this.lblOverview.Size = new System.Drawing.Size(473, 312);
-            this.lblOverview.TabIndex = 3;
-            this.lblOverview.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lblOverview.WrapToLine = true;
             // 
             // pnlScreenshots
             // 
@@ -112,11 +113,31 @@
             this.picScreenshot1.TabIndex = 2;
             this.picScreenshot1.TabStop = false;
             // 
+            // flpRomDescriptions
+            // 
+            this.flpRomDescriptions.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flpRomDescriptions.Location = new System.Drawing.Point(529, 122);
+            this.flpRomDescriptions.Name = "flpRomDescriptions";
+            this.flpRomDescriptions.Size = new System.Drawing.Size(660, 315);
+            this.flpRomDescriptions.TabIndex = 3;
+            // 
+            // btnDownload
+            // 
+            this.btnDownload.ActiveControl = null;
+            this.btnDownload.Location = new System.Drawing.Point(730, 459);
+            this.btnDownload.Name = "btnDownload";
+            this.btnDownload.Size = new System.Drawing.Size(85, 36);
+            this.btnDownload.TabIndex = 5;
+            this.btnDownload.Text = "Download";
+            this.btnDownload.UseSelectable = true;
+            // 
             // RomViewerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1300, 855);
+            this.Controls.Add(this.btnDownload);
+            this.Controls.Add(this.flpRomDescriptions);
             this.Controls.Add(this.pnlScreenshots);
             this.Controls.Add(this.pnlHeader);
             this.Name = "RomViewerForm";
@@ -140,5 +161,7 @@
         private MetroFramework.Controls.MetroLabel lblOverview;
         private MetroFramework.Controls.MetroPanel pnlScreenshots;
         private System.Windows.Forms.PictureBox picScreenshot1;
+        private System.Windows.Forms.FlowLayoutPanel flpRomDescriptions;
+        private MetroFramework.Controls.MetroTile btnDownload;
     }
 }

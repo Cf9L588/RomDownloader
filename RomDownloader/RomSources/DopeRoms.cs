@@ -285,7 +285,8 @@ namespace RomDownloader.RomSources
                 // Extract the rom name from the mainNode
                 string romName = mainNode.Attributes["name"].Value;
                 // Create a rom with the name and the href
-                output = new Rom(romName, new Uri(this.URL, mainNode.Attributes["href"].Value), system);
+                string downloadUrl = GetUrlFromRom(mainNode.Attributes["href"].Value);
+                output = new Rom(romName, new Uri(this.URL, downloadUrl), system);
 
                 // If the status node is not null, try to get the status
                 if(StatusNodes != null)
@@ -314,6 +315,42 @@ namespace RomDownloader.RomSources
             // Return the rom value (or null)
             return output;
         }
+        private string GetUrlFromRom(string url)
+        {
+            string output = null;
+            HttpWebRequest request = (WebRequest.Create(url)) as HttpWebRequest;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            var status = response.StatusCode;
+            while (status == HttpStatusCode.OK)
+            {
+                Stream receiveStream = response.GetResponseStream();
+                StreamReader readStream = null;
 
+                if (response.CharacterSet == null)
+                {
+                    readStream = new StreamReader(receiveStream);
+                }
+                else
+                {
+                    readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
+                }
+
+                string page = readStream.ReadToEnd();
+                status = HttpStatusCode.Found;
+                // I thought that the page would return empty if it wasn't a legit page, but it just returns a page with no roms....
+                while (!string.IsNullOrEmpty(page))
+                {
+                    // Prepare a HtmlDocument from the HTMLAgilityPack
+                    HtmlDocument doc = new HtmlDocument();
+                    // load the HTMLDocument with the source code
+                    doc.LoadHtml(page);
+
+                    // Create a list of nodes containing the roms and their statuses on the current page
+                    var listingNodes = doc.DocumentNode.SelectNodes("//html/body/div[contains(@id, 'dwrap')]/div[contains(@id, 'dbody')]/div[contains(@id, 'obody')]/table/tr[2]/td/table/tr/td/" +
+                        "div[contains(@id, 'csearchajax')]/font/table/tr")?.Where(node => node.Id == "listitem");
+                }
+            }
+            return output;
+        }
     }
 }
