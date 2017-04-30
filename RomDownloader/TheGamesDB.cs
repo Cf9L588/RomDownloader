@@ -168,11 +168,11 @@ namespace RomDownloader
                             break;
                     }
                 }
-                output = new GameInfo(id, title, genres, coOp, players, publisher, developer, images, overview);
+                output = new GameInfo(id, title, genres, coOp, players, publisher, developer, images, overview, system);
             }
             else
             {
-                output = new GameInfo(null, rom, new List<string>(), null, 1, new List<GameInfo.Image>(), noDataOverview);
+                output = new GameInfo(null, rom, new List<string>(), null, 1, new List<GameInfo.Image>(), noDataOverview, system);
             }
             return output;
         }

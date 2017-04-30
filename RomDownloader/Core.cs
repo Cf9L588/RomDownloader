@@ -132,6 +132,23 @@ namespace RomDownloader
             return output;
         }
 
+        internal static List<Rom> GetRomsByName(string systemName, string romName)
+        {
+
+            List<Rom> output = new List<Rom>();
+
+            foreach (var system in SystemList.Where(s => s.Name == systemName))
+            {
+                var matchingRoms = system.Roms?.Where(rom => romName == rom.Name);
+                foreach (var rom in matchingRoms)
+                {
+                    output.Add(rom);
+                }
+
+            }
+            return output;
+        }
+
         internal static async Task<List<string>> GetSystemRomsAsync(string systemName)
         {
             if (!SystemRoms.ContainsKey(systemName))

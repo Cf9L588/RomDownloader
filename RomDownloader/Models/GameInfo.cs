@@ -18,6 +18,7 @@ namespace RomDownloader.Models
         private string developer;
         private List<Image> images;
         private string overview;
+        private string systemName;
         #endregion
 
         #region properties
@@ -138,10 +139,23 @@ namespace RomDownloader.Models
             }
         }
 
+        public string SystemName
+        {
+            get
+            {
+                return systemName;
+            }
+
+            set
+            {
+                systemName = value;
+            }
+        }
+
 
         #endregion
 
-        public GameInfo(string id, string title, List<string> genres, bool? coOp, int? players, string publisher, string developer, List<Image> images, string overview)
+        public GameInfo(string id, string title, List<string> genres, bool? coOp, int? players, string publisher, string developer, List<Image> images, string overview, string systemName)
         {
             Id = id;
             Title = title;
@@ -152,8 +166,9 @@ namespace RomDownloader.Models
             Developer = developer;
             this.Images = images;
             Overview = overview;
+            SystemName = systemName;
         }
-        public GameInfo(string id, string title, List<string> genres, bool? coOp, int? players, List<Image> images, string overview) : this (id, title, genres, coOp, players, null, null, images, overview)
+        public GameInfo(string id, string title, List<string> genres, bool? coOp, int? players, List<Image> images, string overview, string systemName) : this (id, title, genres, coOp, players, null, null, images, overview, systemName)
         {
         }
 

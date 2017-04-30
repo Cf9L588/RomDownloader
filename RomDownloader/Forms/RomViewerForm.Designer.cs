@@ -124,12 +124,13 @@
             // btnDownload
             // 
             this.btnDownload.ActiveControl = null;
-            this.btnDownload.Location = new System.Drawing.Point(730, 459);
+            this.btnDownload.Location = new System.Drawing.Point(709, 458);
             this.btnDownload.Name = "btnDownload";
-            this.btnDownload.Size = new System.Drawing.Size(85, 36);
+            this.btnDownload.Size = new System.Drawing.Size(84, 36);
             this.btnDownload.TabIndex = 5;
             this.btnDownload.Text = "Download";
             this.btnDownload.UseSelectable = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
             // RomViewerForm
             // 

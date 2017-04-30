@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using RomDownloader.Models;
 using RomDownloader.Properties;
 using MetroFramework.Controls;
+using System.Net;
 
 namespace RomDownloader.Forms
 {
@@ -85,6 +86,17 @@ namespace RomDownloader.Forms
                     lblGenres.Text += $", {info.Genres[i]}";
                 }
                 flpRomDescriptions.Controls.Add(lblGenres);
+            }
+        }
+
+        private void btnDownload_Click(object sender, EventArgs e)
+        {
+            List<Rom> roms = Core.GetRomsByName(info.SystemName, info.Title);
+            string downloadUrl = roms[0].DownloadUrl;
+
+            using (var client = new WebClient())
+            {
+                client.DownloadFile(downloadUrl, downloadUrl.Split(new char[] {'/'}).Last());
             }
         }
 
