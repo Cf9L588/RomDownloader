@@ -92,17 +92,18 @@ namespace RomDownloader.Forms
         private void btnDownload_Click(object sender, EventArgs e)
         {
             List<Rom> roms = Core.GetRomsByName(info.SystemName, info.Title);
-            string downloadUrl = roms[0].DownloadUrl;
+            List<string> urls = roms.Select(rom => rom.DownloadUrl).ToList();
+
+            
 
             using (var client = new WebClient())
             {
-                client.DownloadFile(downloadUrl, downloadUrl.Split(new char[] {'/'}).Last());
+                client.DownloadFile(urls[0], urls[0].Split(new char[] { '/' }).Last());
             }
         }
 
         private void RomViewerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
         }
-
     }
 }
