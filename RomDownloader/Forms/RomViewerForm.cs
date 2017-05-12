@@ -30,6 +30,8 @@ namespace RomDownloader.Forms
         public RomViewerForm(GameInfo info)
         {
             InitializeComponent();
+            romName = info.Title;
+            systemName = info.SystemName;
             this.info = info;
             
         }
@@ -43,7 +45,8 @@ namespace RomDownloader.Forms
         {
             if (info == null)
             {
-                var getInfo = TheGamesDB.GetGame(romName, systemName);
+                var getInfo = Core.GetGameInfo(romName, systemName);
+                //var getInfo = TheGamesDB.GetGame(romName, systemName);
                 info = await getInfo;
                 
             }

@@ -1,15 +1,20 @@
 ﻿using RomDownloader.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace RomDownloader
 {
     internal static class Core
     {
+        private const string gameInfoFileName = "gameInfo.xml";
+        private static string AppFolder = null;
+        private static string GameInfoFilePath = null;
         private static List<RomSource> _sources;
         private static List<GameConsole> _systemList;
         private static Dictionary<string, HashSet<string>> SystemRoms;
@@ -46,6 +51,7 @@ namespace RomDownloader
             SystemList = new List<GameConsole>();
             // Gather all RomSources in the Assembly
             GetRomSourcesList();
+            LoadGameInfoFile();
             // get a List of Systems available
             //GetSystemsList();
             SystemRoms = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
@@ -314,6 +320,57 @@ namespace RomDownloader
             }
         }
         
+        internal static void LoadGameInfoFile()
+        {
+            //Create a path that is the users appdata path and the program name
+            string AppFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), System.AppDomain.CurrentDomain.FriendlyName.Split('.')[0]);
+            //Create the directory if it doesn't exist
+            Directory.CreateDirectory(AppFolder);
+            string GameInfoFilePath = Path.Combine(AppFolder, gameInfoFileName);
+            if (!File.Exists(GameInfoFilePath))
+            {
+                CreateXmlFile(GameInfoFilePath);
+            }
+        }
+
+        private static void CreateXmlFile(string filePath)
+        {
+            using (XmlWriter xmlWriter = XmlWriter.Create(filePath))
+            {
+                xmlWriter.WriteStartElement("Systems");
+                xmlWriter.WriteEndElement();
+                xmlWriter.Close();
+            }
+        }
+
+        internal async static Task<GameInfo> GetGameInfo(string rom, string system)
+        {
+            if (File.Exists(GameInfoFilePath))
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(GameInfoFilePath);
+                foreach(XmlNode systemNode in doc.SelectNodes($"Systems/System"))
+                {
+                    if(systemNode.Attributes["Name"].Value == system)
+                    {
+                        foreach (XmlNode romNode in systemNode.SelectNodes("Roms/Rom"))
+                        {
+                            if(romNode.Attributes["Name"].Value == rom)
+                            {
+                                return ConvertNodeToInfo(romNode);
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        private static GameInfo ConvertNodeToInfo(XmlNode node)
+        {
+
+        }
+
         // I added the string comparer so that we won't have to worry about cases - Chandler
         /// <summary>
         /// This dictionary corrects the names of consoles based on known incorrect values
