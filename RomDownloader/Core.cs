@@ -351,14 +351,15 @@ namespace RomDownloader
                 doc.Load(GameInfoFilePath);
                 foreach(XmlNode systemNode in doc.SelectNodes($"Systems/System"))
                 {
-                    break;
                     if(systemNode.Attributes["Name"].Value == system)
                     {
                         foreach (XmlNode romNode in systemNode.SelectNodes("Roms/Rom"))
                         {
                             if(romNode.Attributes["Name"].Value == rom)
                             {
-                                return ConvertNodeToInfo(romNode);
+                                var info =  ConvertNodeToInfo(romNode);
+                                info.SystemName = system;
+                                return info;
                             }
                         }
                     }
@@ -372,7 +373,40 @@ namespace RomDownloader
 
         private static GameInfo ConvertNodeToInfo(XmlNode node)
         {
-            return null;
+            string title = node.Attributes["Name"].Value;
+            string id = node.Attributes["Id"].Value;
+            string publisher = node.Attributes["Publisher"].Value;
+            string developer = node.Attributes["Developer"].Value;
+            bool coOp = Boolean.Parse(node.Attributes["Co-Op"].Value);
+            int players = Convert.ToInt32(node.Attributes["Players"].Value);
+            string overview = null;
+            List<GameInfo.Image> images = new List<GameInfo.Image>();
+            List<string> genres = new List<string>();
+
+            foreach (XmlNode child in node.ChildNodes)
+            {
+                switch (child.Name)
+                {
+                    case "Overview":
+                        overview = child.InnerText;
+                        break;
+                    case "Genres":
+                        foreach (XmlNode genre in child.ChildNodes)
+                        {
+                            genres.Add(genre.InnerText);
+                        }
+                        break;
+                    case "Images":
+                        foreach (XmlNode imageNode in child.ChildNodes)
+                        {
+                            string url = imageNode.Attributes["Url"].Value;
+                            GameInfo.Image.ImageStyle style = (GameInfo.Image.ImageStyle)Enum.Parse(typeof(GameInfo.Image.ImageStyle), imageNode.Attributes["Type"].Value);
+                            images.Add(new GameInfo.Image(url, style));
+                        }
+                        break;
+                }
+            }
+            return new GameInfo(id, title, genres, coOp, players, publisher, developer, images, overview, null);
         }
 
         private static void ConvertInfoToNode(GameInfo info)
