@@ -326,7 +326,7 @@ namespace RomDownloader
             string AppFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), System.AppDomain.CurrentDomain.FriendlyName.Split('.')[0]);
             //Create the directory if it doesn't exist
             Directory.CreateDirectory(AppFolder);
-            string GameInfoFilePath = Path.Combine(AppFolder, gameInfoFileName);
+            GameInfoFilePath = Path.Combine(AppFolder, gameInfoFileName);
             if (!File.Exists(GameInfoFilePath))
             {
                 CreateXmlFile(GameInfoFilePath);
@@ -351,6 +351,7 @@ namespace RomDownloader
                 doc.Load(GameInfoFilePath);
                 foreach(XmlNode systemNode in doc.SelectNodes($"Systems/System"))
                 {
+                    break;
                     if(systemNode.Attributes["Name"].Value == system)
                     {
                         foreach (XmlNode romNode in systemNode.SelectNodes("Roms/Rom"))
@@ -366,7 +367,7 @@ namespace RomDownloader
             var getInfo = TheGamesDB.GetGame(rom, system);
             GameInfo output = await getInfo;
             ConvertInfoToNode(output);
-            return null;
+            return output;
         }
 
         private static GameInfo ConvertNodeToInfo(XmlNode node)
@@ -406,9 +407,41 @@ namespace RomDownloader
 
             if (romNode == null)
             {
-                XmlElement element = doc.CreateElement("Rom");
-                element.SetAttribute("Name", info.Title);
-                romsNode.AppendChild(element);
+                XmlElement romElement = doc.CreateElement("Rom");
+                romElement.SetAttribute("Name", info.Title);
+                romElement.SetAttribute("Id", info.Id);
+                romElement.SetAttribute("Publisher", info.Publisher);
+                romElement.SetAttribute("Developer", info.Developer);
+                romElement.SetAttribute("Co-Op", info.CoOp.ToString());
+                romElement.SetAttribute("Players", info.Players.ToString());
+
+                XmlElement overviewElement = doc.CreateElement("Overview");
+                overviewElement.InnerText = info.Overview;
+                if (info.Genres.Count > 0)
+                {
+                    XmlElement genresElement = doc.CreateElement("Genres");
+                    foreach (var genre in info.Genres)
+                    {
+                        XmlElement genreElement = doc.CreateElement("Genre");
+                        genreElement.InnerText = genre;
+                        genresElement.AppendChild(genreElement);
+                    }
+                    romElement.AppendChild(genresElement);
+                }
+                if (info.Images.Count > 0)
+                {
+                    XmlElement imagesElement = doc.CreateElement("Images");
+                    foreach (var image in info.Images)
+                    {
+                        XmlElement imageElement = doc.CreateElement("Image");
+                        imageElement.SetAttribute("Type", image.Style.ToString());
+                        imageElement.SetAttribute("Url", image.Url);
+                        imagesElement.AppendChild(imageElement);
+                    }
+                    romElement.AppendChild(imagesElement);
+                }
+                romElement.AppendChild(overviewElement);
+                romsNode.AppendChild(romElement);
             }
             doc.Save(GameInfoFilePath);
         }
