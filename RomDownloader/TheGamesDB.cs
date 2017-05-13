@@ -23,6 +23,14 @@ namespace RomDownloader
 
         internal static async Task<GameInfo> GetGame(string rom, string system)
         {
+            if (Globals.gamesDbConnection == null)
+            {
+                Globals.gamesDbConnection = CheckConnection();
+                if (Globals.gamesDbConnection == false)
+                {
+                    return null;
+                }
+            }
             var apiURL = new Uri(baseUri, $"api/GetGame.php?exactname={rom}&platform={system}");
             HttpWebRequest request = (WebRequest.Create(apiURL.ToString())) as HttpWebRequest;
             HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync();
@@ -176,6 +184,17 @@ namespace RomDownloader
             }
             return output;
         }
+        private static bool CheckConnection()
+        {
+            bool output = true;
+            HttpWebRequest request = (WebRequest.Create(baseUri.ToString())) as HttpWebRequest;
 
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            if (response == null || response.StatusCode != HttpStatusCode.OK)
+            {
+                output = false;
+            }
+            return output;
+        }
     }
 }

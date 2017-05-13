@@ -9,5 +9,6 @@ namespace RomDownloader
 {
     internal static class Globals
     {
+        internal static bool? gamesDbConnection = null;
     }
 }

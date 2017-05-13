@@ -46,9 +46,18 @@ namespace RomDownloader.Forms
             if (info == null)
             {
                 var getInfo = Core.GetGameInfo(romName, systemName);
-                //var getInfo = TheGamesDB.GetGame(romName, systemName);
                 info = await getInfo;
-                
+                if (info == null)
+                {
+                    if (Globals.gamesDbConnection == true)
+                    {
+                        this.Close();
+                    }
+                    else
+                    {
+                        this.Close();
+                    }
+                }
             }
             var boxArt = info.Images.Where(img => img.Style == GameInfo.Image.ImageStyle.BoxArt_Front)?.Select(img => img.Url)
                 ?? info.Images.Where(img => img.Style == GameInfo.Image.ImageStyle.BoxArt_Back).Select(img => img.Url);

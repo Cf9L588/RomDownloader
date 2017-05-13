@@ -363,13 +363,56 @@ namespace RomDownloader
                     }
                 }
             }
+            var getInfo = TheGamesDB.GetGame(rom, system);
+            GameInfo output = await getInfo;
+            ConvertInfoToNode(output);
             return null;
         }
 
         private static GameInfo ConvertNodeToInfo(XmlNode node)
         {
-
+            return null;
         }
+
+        private static void ConvertInfoToNode(GameInfo info)
+        {
+            if (!File.Exists(GameInfoFilePath))
+            {
+                CreateXmlFile(GameInfoFilePath);
+            }
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(GameInfoFilePath);
+            XmlNode systemsNode = doc.SelectSingleNode("Systems");
+            XmlNode systemNode = systemsNode.SelectSingleNode($"System[@Name='{info.SystemName}']");
+
+            if (systemNode == null)
+            {
+                XmlElement element = doc.CreateElement("System");
+                element.SetAttribute("Name", info.SystemName);
+                systemsNode.AppendChild(element);
+                systemNode = systemsNode.SelectSingleNode($"System[@Name='{info.SystemName}']");
+            }
+
+            XmlNode romsNode = systemNode.SelectSingleNode("Roms");
+            
+            if (romsNode == null)
+            {
+                XmlElement element = doc.CreateElement("Roms");
+                systemNode.AppendChild(element);
+                romsNode = systemNode.SelectSingleNode("Roms");
+            }
+            XmlNode romNode = romsNode.SelectSingleNode($"Rom[@Name = '{info.SystemName}']");
+
+            if (romNode == null)
+            {
+                XmlElement element = doc.CreateElement("Rom");
+                element.SetAttribute("Name", info.Title);
+                romsNode.AppendChild(element);
+            }
+            doc.Save(GameInfoFilePath);
+        }
+
 
         // I added the string comparer so that we won't have to worry about cases - Chandler
         /// <summary>
